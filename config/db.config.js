@@ -3,14 +3,14 @@ var Redis = require("redis");
 const conf = {
     host: 'localhost',
     port: 6379,
-    prefix:'rubika'
+    prefix: 'rubika'
 }
 
 // const dump = new RedisDump(conf);
 
 const redis = Redis.createClient(conf);
 redis.on("err", (err) => {
-    console.log(err);
+    console.error(err);
 })
 module.exports = {
     redis: redis,

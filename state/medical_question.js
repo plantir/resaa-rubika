@@ -59,12 +59,11 @@ bot.onText(/سوال پزشکی دارم|بازگشت به صفحه تخصص ه�
             let res = await bot.sendMessage(msg.chat_id, message, {
                 data
             })
-            console.log(res);
         } catch (error) {
 
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 
 })

@@ -6,7 +6,7 @@ const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFS
 class User {
 
     constructor(chatId) {
-        this.API_URL = 'https://webapi.resaa.net';
+        this.API_URL = process.env.NODE_ENV === 'development' ? 'https://webapi.resaa.net' : 'http://resa-web-api.bsn.local';
         this.chatId = chatId;
     }
     get state() {
@@ -121,7 +121,8 @@ class User {
         })
     }
     static payment_verify(orderId) {
-        return request.put(`https://webapi.resaa.net/Rubika/Charge/Verify?orderId=${orderId}`)
+        let model = new User()
+        return request.put(`${model.API_URL}/Rubika/Charge/Verify?orderId=${orderId}`)
     }
     push_history({
         text,
@@ -209,7 +210,6 @@ class User {
                     // body: 'test'
 
                 }, (err, res, body) => {
-                    console.log(body);
                 }));
             })
         })

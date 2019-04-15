@@ -19,7 +19,7 @@ bot.onText(/\d+/, async msg => {
     let message = `دکتر ${doctor.firstName} ${doctor.lastName}`
     message += `\nکد رسا ${doctor.subscriberNumber}`
     message += `\n${doctor.expertise}`
-    message += `\nوضعیت ${doctor.currentlyAvailable?'در دسترس':'خارج از دسترس'}`
+    message += `\nوضعیت ${doctor.currentlyAvailable ? 'در دسترس' : 'خارج از دسترس'}`
     let time_message = `زمان های پاسخگویی\n`;
     doctor.timetable.segments = _.sortBy(doctor.timetable.segments, o => o.from)
     for (const item of doctor.timetable.segments) {
@@ -75,7 +75,7 @@ bot.onText(/\d+/, async msg => {
         let phone = await user.phone
         rows.push({
             buttons: [{
-                type: phone?"Simple":"AskMyPhoneNumber",
+                type: phone ? "Simple" : "AskMyPhoneNumber",
                 button_view: {
                     text: `تماس با دکتر ${doctor.firstName} ${doctor.lastName}`,
                     type: "TextOnly"
@@ -107,15 +107,15 @@ bot.onText(/\d+/, async msg => {
         }
     }
     try {
-        
-     await bot.sendMessage(msg.chat_id, '', {
+
+        await bot.sendMessage(msg.chat_id, '', {
             data: {
                 file_id: doctor_image_id,
             }
         }, false)
-    await bot.sendMessage(msg.chat_id, message, {}, false)
+        await bot.sendMessage(msg.chat_id, message, {}, false)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
     bot.sendMessage(msg.chat_id, time_message, {
         data

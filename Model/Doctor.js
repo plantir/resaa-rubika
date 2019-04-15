@@ -4,11 +4,10 @@ const request = require('request-promise');
 const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
 const dbConf = require('../config/db.config')
 const redis = dbConf.redis
-
 class Doctor {
 
     constructor() {
-        this.API_URL = 'https://webapi.resaa.net';
+        this.API_URL = process.env.NODE_ENV === 'development' ? 'https://webapi.resaa.net' : 'http://resa-web-api.bsn.local';
         this.fields = 'subscriberNumber,firstName,lastName,currentlyAvailable'
     }
 
@@ -46,8 +45,8 @@ class Doctor {
         })
     }
     static get_speciality_list() {
-     
-        return new Promise((resolve,reject)=>{
+
+        return new Promise((resolve, reject) => {
             redis.get(`speciality_list`, async (err, specialities) => {
                 if (specialities) {
                     return resolve(JSON.parse(specialities))
@@ -64,7 +63,7 @@ class Doctor {
             })
         })
     }
-    static get_time_price(id,phone) {
+    static get_time_price(id, phone) {
         let model = new Doctor()
         return request({
             method: 'GET',
@@ -73,6 +72,7 @@ class Doctor {
         })
     }
     static image_id(doctor_id) {
+        let model = new Doctor()
         return new Promise((resolve, reject) => {
             redis.get(`doctor_${doctor_id}_image`, (err, file_id) => {
                 if (file_id) {
@@ -94,9 +94,9 @@ class Doctor {
                             }
                         }
                     }).then(res => {
-                        request.get(`https://webapi.resaa.net/Doctors/${doctor_id}/Image`, {
-                                encoding: null
-                            })
+                        request.get(`${model.API_URL}/Doctors/${doctor_id}/Image`, {
+                            encoding: null
+                        })
                             .pipe(request.post(res.data.upload_url, {
                                 headers: {
                                     'bot-token': bot_token,
