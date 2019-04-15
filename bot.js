@@ -15,7 +15,7 @@ class Bot extends Rubikabot {
   }
 }
 const bot = new Bot(token, {
-  polling: true,
+  polling: process.env.NODE_ENV ? true : false,
   start_message_id: 4102840338
 })
 module.exports = bot
