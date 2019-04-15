@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node-rubika-bot-api": "https://github.com/vrwebdesign/rubika_bot",
+    "redis": "^2.8.0"
+  }
+}
