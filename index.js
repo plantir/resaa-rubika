@@ -21,7 +21,11 @@ if (process.env.NODE_ENV !== 'development') {
     const app = express();
     app.use(bodyParser.json());
     app.post(`/`, (req, res) => {
+        console.log(req.body);
         bot.processUpdate(req.body);
+        res.sendStatus(200);
+    });
+    app.get(`/`, (req, res) => {
         res.sendStatus(200);
     });
 
