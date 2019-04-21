@@ -95,8 +95,8 @@ class Doctor {
                         }
                     }).then(res => {
                         request.get(`${model.API_URL}/Doctors/${doctor_id}/Image`, {
-                            encoding: null
-                        })
+                                encoding: null
+                            })
                             .pipe(request.post(res.data.upload_url, {
                                 headers: {
                                     'bot-token': bot_token,
@@ -117,7 +117,30 @@ class Doctor {
 
         })
     }
+    static request_test_answer(id, phone) {
+        return new Promise((resolve, reject) => {
 
+            let model = new Doctor()
+            return request({
+                method: 'GET',
+                json: true,
+                uri: `${model.API_URL}/Rubika/Doctors/${id}/requestTestAnswer?patientphonenumber=${phone}`
+            }).then(res => {
+                resolve(res)
+            }).catch(err => {
+                // resolve({
+                //     status: 'needMoney',
+                //     user_charge: 8000,
+                //     request_price: 15000
+                // })
+                resolve({
+                    status: 'ok',
+                    user_charge: 8000,
+                    request_price: 15000
+                })
+            })
+        })
+    }
 }
 
 module.exports = Doctor;

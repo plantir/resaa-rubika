@@ -15,26 +15,22 @@ bot.onText(/تماس با دکتر *.*/, async msg => {
   if (!phone) {
     message = `شما هنوز در رسا ثبت نام نکرده اید حهت ثبت نام روی دکمه ثبت نام کلیک کنید`
     rows.push({
-      buttons: [
-        {
-          type: 'AskMyPhoneNumber',
-          button_view: {
-            text: `ثبت نام`,
-            type: 'TextOnly'
-          }
+      buttons: [{
+        type: 'AskMyPhoneNumber',
+        button_view: {
+          text: `ثبت نام`,
+          type: 'TextOnly'
         }
-      ]
+      }]
     })
     rows.push({
-      buttons: [
-        {
-          type: 'Simple',
-          button_view: {
-            text: 'بازگشت به خانه',
-            type: 'TextOnly'
-          }
+      buttons: [{
+        type: 'Simple',
+        button_view: {
+          text: 'بازگشت به خانه',
+          type: 'TextOnly'
         }
-      ]
+      }]
     })
     let data = {
       bot_keypad: {
@@ -50,7 +46,7 @@ bot.onText(/تماس با دکتر *.*/, async msg => {
   let res = await Doctor.find(visit_doctor)
   let doctor = res.result.doctor
   let minute_array = doctor.specialty.id == 41 ? [5, 10, 15, 30] : [3, 5, 10]
-  let price = await Doctor.get_time_price(visit_doctor)
+  let price = await Doctor.get_time_price(visit_doctor, phone)
   let costPerMinute = price.result.quote.costPerMinute
   let amount_list = calc_amount(costPerMinute, minute_array)
   message = `هزینه تماس با دکتر ${doctor.firstName} ${doctor.lastName}`
@@ -58,28 +54,24 @@ bot.onText(/تماس با دکتر *.*/, async msg => {
   message += `\n\nدر صورت عدم برقراری ارتباط میتوانید با پشتیبانی تماس گرفته و درخواست استرداد وجه نمایید `
   for (let item of amount_list) {
     rows.push({
-      buttons: [
-        {
-          type: 'Simple',
-          button_view: {
-            text: `${item.perioud} دقیقه ${item.amount} تومان`,
-            type: 'TextOnly'
-          }
+      buttons: [{
+        type: 'Simple',
+        button_view: {
+          text: `${item.perioud} دقیقه ${item.amount} تومان`,
+          type: 'TextOnly'
         }
-      ]
+      }]
     })
   }
 
   rows.push({
-    buttons: [
-      {
-        type: 'Simple',
-        button_view: {
-          text: 'بازگشت به خانه',
-          type: 'TextOnly'
-        }
+    buttons: [{
+      type: 'Simple',
+      button_view: {
+        text: 'بازگشت به خانه',
+        type: 'TextOnly'
       }
-    ]
+    }]
   })
   let data = {
     bot_keypad: {
@@ -91,7 +83,7 @@ bot.onText(/تماس با دکتر *.*/, async msg => {
   })
 })
 
-function calc_amount (costPerMinute, minutes) {
+function calc_amount(costPerMinute, minutes) {
   let amount_list = []
   for (let min of minutes) {
     let amount = costPerMinute * min

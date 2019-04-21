@@ -14,18 +14,22 @@ bot.on('message', async msg => {
     let specialty_name = msg.text;
     let specialtyId;
     for (const item of specialities) {
-        if(item.title == specialty_name){
+        if (item.title == specialty_name) {
             specialtyId = item.id
             break;
         }
     }
-    if(!specialtyId){
+    if (!specialtyId) {
         return
     }
-    let {result:{doctors}} = await Doctor.get_doctors({
+    let {
+        result: {
+            doctors
+        }
+    } = await Doctor.get_doctors({
         specialtyId
     })
-    doctors = _.orderBy(doctors,'currentlyAvailable','desc')
+    doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc')
     let message = `لیست پزشکان متخصص ${msg.text}`
     let rows = [];
     doctors.forEach((doctor, index) => {

@@ -2,14 +2,16 @@ const User = require('../Model/User');
 const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
 const _enum = require('../config/enum');
+const DoctorProvider = require('../provider/DoctorProvider')
 const _ = require('lodash')
 bot.onText(/\d+/, async msg => {
+    let id = +msg.text.replace(/[^\d+]/g, '')
     let user = new User(msg.chat_id)
     let state = await user.state;
     if (state != _enum.state.select_doctor) {
         return
     }
-    let id = +msg.text.replace(/[^\d+]/g, '')
+    return DoctorProvider.sned_doctor_profile(msg.chat_id, id)
     user.state = _enum.state.doctor_detail;
     user.visit_doctor = id;
     let res = await Doctor.find(id)
@@ -68,11 +70,23 @@ bot.onText(/\d+/, async msg => {
         }
         time_message += `\n${date_name} ${end_time_hour}:${end_time_minute} - ${start_time_hour}:${start_time_minute} `
     }
+    let phone = await user.phone
 
 
     let rows = [];
+    doctor.testAnswer = true;
+    if (doctor.testAnswer) {
+        rows.push({
+            buttons: [{
+                type: phone ? "Simple" : "AskMyPhoneNumber",
+                button_view: {
+                    text: `ارسال جواب آزمایش`,
+                    type: "TextOnly"
+                }
+            }]
+        })
+    }
     if (doctor.currentlyAvailable) {
-        let phone = await user.phone
         rows.push({
             buttons: [{
                 type: phone ? "Simple" : "AskMyPhoneNumber",
