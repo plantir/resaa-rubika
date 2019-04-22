@@ -1,8 +1,10 @@
 const dbConf = require('../config/db.config')
 const redis = dbConf.redis
 const request = require('request-promise');
+const axios = require('axios')
 const fs = require('fs')
 const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
+const doctor_bot_api = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : 'https://doctorsTelegramBot.resaa.net'
 class User {
 
     constructor(chatId) {
@@ -209,10 +211,67 @@ class User {
                     },
                     // body: 'test'
 
-                }, (err, res, body) => {
-                }));
+                }, (err, res, body) => {}));
             })
         })
+    }
+    add_file(file_url) {
+        return new Promise((resolve, reject) => {
+            redis.get(this.chatId + "_testAnswer_files", (err, testAnswers) => {
+                if (testAnswers && testAnswers !== 'null') {
+                    testAnswers = JSON.parse(testAnswers)
+                } else {
+                    testAnswers = []
+                }
+                testAnswers.push(file_url);
+                testAnswers = JSON.stringify(testAnswers)
+                redis.set(this.chatId + "_testAnswer_files", testAnswers, (err, succsess) => {
+                    if (succsess) {
+                        return resolve(JSON.parse(testAnswers))
+                    }
+                    if (err) {
+                        return reject(err)
+                    }
+                })
+            })
+        })
+    }
+    remove_files() {
+        return new Promise((resolve, reject) => {
+            redis.set(this.chatId + "_testAnswer_files", null, (err, succsess) => {
+                if (succsess) {
+                    return resolve()
+                }
+                if (err) {
+                    return reject(err)
+                }
+            })
+        })
+    }
+    send_testAnswer(doctor_chat_id) {
+        return new Promise((resolve, reject) => {
+            redis.get(this.chatId + "_testAnswer_files", (err, testAnswers) => {
+                if (!testAnswers && testAnswers == 'null') {
+                    return reject('شما فایلی برای ارسال ندارید لطفا مراحل ارسال جواب آزمایش را مجددا طی کنید')
+                }
+                testAnswers = JSON.parse(testAnswers)
+                request({
+                    url: `${doctor_bot_api}/testAnswer`,
+                    method: 'POST',
+                    body: {
+                        testAnswers,
+                        chat_id: doctor_chat_id
+                    },
+                    json: true
+                }).then(res => {
+                    this.remove_files()
+                    resolve(res)
+                }).catch(err => {
+                    reject('درخواست شما با مشکل مواجه شد لطفا مجددا تلاش کنید')
+                })
+            })
+        })
+
     }
 }
 

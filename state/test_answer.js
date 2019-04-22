@@ -3,8 +3,6 @@ const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
 const _enum = require('../config/enum');
 const _ = require('lodash')
-const fs = require('fs')
-const request = require('request-promise')
 bot.onText(/ارسال جواب آزمایش/, async msg => {
     let message = ''
     let rows = []
@@ -74,20 +72,127 @@ bot.onText(/ارسال جواب آزمایش/, async msg => {
             rows
         }
     }
+    bot.sendMessage(msg.chat_id, message, {
+        data
+    })
+})
+bot.onText(/حذف تمامی فایل ها و ارسال مجدد/, async msg => {
+    let user = new User(msg.chat_id)
+    let state = await user.state;
+    if (state != _enum.state.test_answer) {
+        return
+    }
+    await user.remove_files()
+    let message = `همه فایل های ارسال شده پاک شده لطفا فایل خود رو مجددا ارسال نمایید`
+    let data = {
+        bot_keypad: {
+            rows: [{
+                buttons: [{
+                    type: "Simple",
+                    button_view: {
+                        text: "بازگشت به خانه",
+                        type: "TextOnly"
+                    }
+                }]
+            }]
+        }
+    }
     return bot.sendMessage(msg.chat_id, message, {
         data
     })
 })
-
 bot.on('file', async msg => {
     let user = new User(msg.chat_id)
     let state = await user.state;
     if (state != _enum.state.test_answer) {
         return
     }
-    request.get(msg.file_inline.file_url, {
-            encoding: null
-        })
-        .pipe(fs.createWriteStream('test.png'))
-    console.log(msg);
+    let files = await user.add_file(msg.file_inline.file_url)
+    let message = `شما تا کنون ${files.length} فایل پیوست کرده اید اگر فایل دیگری هم دارید ارسال کنید در غیر اینصورت بر روی دکمه ارسال جواب آزمایش ضربه بزنید`
+    let data = {
+        bot_keypad: {
+            rows: [{
+                buttons: [{
+                    type: "Simple",
+                    button_view: {
+                        text: "اتمام",
+                        type: "TextOnly"
+                    }
+                }]
+            }, {
+                buttons: [{
+                    type: "Simple",
+                    button_view: {
+                        text: "حذف تمامی فایل ها و ارسال مجدد",
+                        type: "TextOnly"
+                    }
+                }]
+            }, {
+                buttons: [{
+                    type: "Simple",
+                    button_view: {
+                        text: "بازگشت به خانه",
+                        type: "TextOnly"
+                    }
+                }]
+            }]
+        }
+    }
+    return bot.sendMessage(msg.chat_id, message, {
+        data
+    })
+
+})
+bot.onText(/اتمام|تلاش مجدد/, async msg => {
+    let user = new User(msg.chat_id);
+    let doctor_id = await user.visit_doctor
+    let res = await Doctor.find(doctor_id)
+    let doctor = res.result.doctor;
+
+    let message;
+    let data;
+    try {
+        let tracking_code = await user.send_testAnswer(96852497)
+        message = `جواب آزمایش شما با موفقیت برای دکتر ${doctor.firstName} ${doctor.lastName} ارسال شد\n کد پیگیری جواب آزمایش شما ${tracking_code}`
+        data = {
+            bot_keypad: {
+                rows: [{
+                    buttons: [{
+                        type: "Simple",
+                        button_view: {
+                            text: "بازگشت به خانه",
+                            type: "TextOnly"
+                        }
+                    }]
+                }]
+            }
+        }
+    } catch (error) {
+        message = error;
+        data = {
+            bot_keypad: {
+                rows: [{
+                    buttons: [{
+                        type: "Simple",
+                        button_view: {
+                            text: "تلاش مجدد",
+                            type: "TextOnly"
+                        }
+                    }]
+                }, {
+                    buttons: [{
+                        type: "Simple",
+                        button_view: {
+                            text: "بازگشت به خانه",
+                            type: "TextOnly"
+                        }
+                    }]
+                }]
+            }
+        }
+    }
+
+    bot.sendMessage(msg.chat_id, message, {
+        data
+    })
 })
