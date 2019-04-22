@@ -1,7 +1,6 @@
 const dbConf = require('../config/db.config')
 const redis = dbConf.redis
 const request = require('request-promise');
-const axios = require('axios')
 const fs = require('fs')
 const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
 const doctor_bot_api = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : 'https://doctorsTelegramBot.resaa.net'
@@ -251,7 +250,7 @@ class User {
     send_testAnswer(doctor_chat_id) {
         return new Promise((resolve, reject) => {
             redis.get(this.chatId + "_testAnswer_files", (err, testAnswers) => {
-                if (!testAnswers && testAnswers == 'null') {
+                if (!testAnswers || testAnswers == 'null') {
                     return reject('شما فایلی برای ارسال ندارید لطفا مراحل ارسال جواب آزمایش را مجددا طی کنید')
                 }
                 testAnswers = JSON.parse(testAnswers)
