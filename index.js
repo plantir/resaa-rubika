@@ -11,6 +11,7 @@ require('./state/charge')
 require('./state/back')
 require('./state/payment_return')
 require('./state/test_answer')
+process.env.NODE_ENV = 'development'
 if (process.env.NODE_ENV !== 'development') {
     const bot = require('./bot')
     const port = 80;
