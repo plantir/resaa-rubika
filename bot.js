@@ -1,3 +1,4 @@
+require('dotenv').config()
 let Rubikabot = require('node-rubika-bot-api')
 const token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
 const User = require('./Model/User')
@@ -15,7 +16,7 @@ class Bot extends Rubikabot {
   }
 }
 const bot = new Bot(token, {
-  polling: process.env.NODE_ENV ? true : false,
-  start_message_id: 4343555156
+  polling: process.env.MODE == 'polling' ? true : false,
+  start_message_id: 4378080439
 })
 module.exports = bot
