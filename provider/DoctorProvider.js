@@ -68,11 +68,22 @@ class DoctorProvder {
 
 
         let rows = [];
-        doctor.testAnswer = true;
-        if (doctor.testAnswer) {
+        if (!phone) {
             rows.push({
                 buttons: [{
-                    type: phone ? "Simple" : "AskMyPhoneNumber",
+                    type: "AskMyPhoneNumber",
+                    button_view: {
+                        text: `ثبت نام / ورود`,
+                        type: "TextOnly"
+                    }
+                }]
+            })
+        }
+        doctor.testAnswer = true;
+        if (phone && doctor.testAnswer) {
+            rows.push({
+                buttons: [{
+                    type: "Simple",
                     button_view: {
                         text: `ارسال جواب آزمایش`,
                         type: "TextOnly"
@@ -80,10 +91,10 @@ class DoctorProvder {
                 }]
             })
         }
-        if (doctor.currentlyAvailable) {
+        if (phone && doctor.currentlyAvailable) {
             rows.push({
                 buttons: [{
-                    type: phone ? "Simple" : "AskMyPhoneNumber",
+                    type: "Simple",
                     button_view: {
                         text: `تماس با دکتر ${doctor.firstName} ${doctor.lastName}`,
                         type: "TextOnly"

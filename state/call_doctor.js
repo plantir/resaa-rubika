@@ -47,7 +47,34 @@ bot.onText(/تماس با دکتر *.*/, async msg => {
   let doctor = res.result.doctor
   let minute_array = doctor.specialty.id == 41 ? [5, 10, 15, 30] : [3, 5, 10]
   let price = await Doctor.get_time_price(visit_doctor, phone)
-  let costPerMinute = price.result.quote.costPerMinute
+  // let duration = price.result.quote.duration;
+  // let costPerMinute = price.result.quote.costPerMinute
+  let {
+    costPerMinute,
+    duration,
+    isFreeFirstCall
+  } = price.result.quote
+  if (isFreeFirstCall) {
+    return bot.sendMessage(msg.chat_id, `شما تماس اول را مهمان رسا هستید\nشما میتوانید به مدت ${duration} دقیقه با دکتر ${doctor.firstName} ${doctor.lastName} صحبت کنید\nبرای برقراری تماس بر روی دکمه تماس کلیک کنید و سپس کد ${doctor.subscriberNumber} را شماره گیری نمایید`, {
+      data: {
+        bot_keypad: {
+          rows: [{
+            buttons: [{
+              type: "Call",
+              button_view: {
+                text: "تماس با پزشک",
+                type: "TextOnly"
+              },
+              button_call: {
+                "phone_number": "02174471111"
+              },
+            }]
+          }]
+        }
+      }
+    })
+
+  }
   let amount_list = calc_amount(costPerMinute, minute_array)
   message = `هزینه تماس با دکتر ${doctor.firstName} ${doctor.lastName}`
   message += `\n\nدر صورتی که مدت زمان مکالمه کمتر از این مقدار باشد پول در حساب شما میماند و میتوانید در تماس های بعدی از آن استفاده نمایید`
@@ -73,14 +100,42 @@ bot.onText(/تماس با دکتر *.*/, async msg => {
       }
     }]
   })
-  let data = {
-    bot_keypad: {
-      rows
+  if (duration < 2) {
+    message = `هزینه تماس با دکتر ${doctor.firstName} ${doctor.lastName}`
+    message += `\n\nدر صورتی که مدت زمان مکالمه کمتر از این مقدار باشد پول در حساب شما میماند و میتوانید در تماس های بعدی از آن استفاده نمایید`
+    message += `\n\nدر صورت عدم برقراری ارتباط میتوانید با پشتیبانی تماس گرفته و درخواست استرداد وجه نمایید `
+    let data = {
+      bot_keypad: {
+        rows
+      }
     }
+    bot.sendMessage(msg.chat_id, message, {
+      data
+    })
+  } else {
+    rows.unshift({
+
+      buttons: [{
+        type: "Call",
+        button_view: {
+          text: "تماس با پزشک",
+          type: "TextOnly"
+        },
+        button_call: {
+          "phone_number": "02174471111"
+        },
+      }]
+
+    })
+    let data = {
+      bot_keypad: {
+        rows
+      }
+    }
+    bot.sendMessage(msg.chat_id, `شما میتوانید به مدت ${duration} دقیقه با دکتر ${doctor.firstName} ${doctor.lastName} صحبت کنید\nبرای برقراری تماس بر روی دکمه تماس کلیک کنید و سپس کد ${doctor.subscriberNumber} را شماره گیری نمایید`, {
+      data
+    })
   }
-  bot.sendMessage(msg.chat_id, message, {
-    data
-  })
 })
 
 function calc_amount(costPerMinute, minutes) {

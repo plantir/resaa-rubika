@@ -4,6 +4,7 @@ const request = require('request-promise');
 const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
 const dbConf = require('../config/db.config')
 const redis = dbConf.redis
+const _ = require('lodash')
 class Doctor {
 
     constructor() {
@@ -29,11 +30,22 @@ class Doctor {
         if (name) {
             uri += `&name=${name}`
         }
-        return request({
-            method: 'GET',
-            json: true,
-            uri: encodeURI(uri)
-        })
+    return new Promise((resolve, reject) => {
+
+      request({
+        method: 'GET',
+        json: true,
+        uri: encodeURI(uri)
+      }).then(res => {
+        let available = res.result.doctors.filter(item => item.currentlyAvailable);
+        let notavailable = res.result.doctors.filter(item => !item.currentlyAvailable);
+        let doctors = _.sampleSize(available, limit)
+        if (doctors.length < limit) {
+          doctors.push(..._.sampleSize(notavailable, limit - doctors.length))
+        }
+        resolve(doctors);
+      }).catch(err => reject(err))
+    })
     }
     static find(id) {
         let model = new Doctor()
@@ -120,27 +132,37 @@ class Doctor {
     static request_test_answer(id, phone) {
         return new Promise((resolve, reject) => {
 
-            let model = new Doctor()
-            return request({
-                method: 'GET',
-                json: true,
-                uri: `${model.API_URL}/Rubika/Doctors/${id}/requestTestAnswer?patientphonenumber=${phone}`
-            }).then(res => {
-                resolve(res)
-            }).catch(err => {
-                // resolve({
-                //     status: 'needMoney',
-                //     user_charge: 8000,
-                //     request_price: 15000
-                // })
-                resolve({
-                    status: 'ok',
-                    user_charge: 8000,
-                    request_price: 15000
-                })
-            })
+      let model = new Doctor()
+      return request({
+        method: 'GET',
+        json: true,
+        uri: `${model.API_URL}/Rubika/Doctors/${id}/requestTestAnswer?patientphonenumber=${phone}`
+      }).then(res => {
+        resolve(res)
+      }).catch(err => {
+
+        if (id == 7580) {
+          return resolve({
+            status: 'needMoney',
+            user_charge: 8000,
+            request_price: 15000
+          })
+        }
+        if (id == 7536) {
+          return resolve({
+            status: 'ok',
+            user_charge: 8000,
+            request_price: 15000
+          })
+        }
+        resolve({
+          status: 'needTalk',
+          user_charge: 8000,
+          request_price: 15000
         })
-    }
+      })
+    })
+  }
 }
 
 module.exports = Doctor;

@@ -3,7 +3,7 @@ const redis = dbConf.redis
 const request = require('request-promise');
 const fs = require('fs')
 const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
-const doctor_bot_api = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : 'https://doctorsTelegramBot.resaa.net'
+const doctor_bot_api = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : 'https://doctorbottelegram.resaa.net'
 class User {
 
     constructor(chatId) {
@@ -89,7 +89,7 @@ class User {
             }).catch(err => {
                 if (err.error.code == 409) {
                     this.phone = phoneNumber;
-                    reject("این شماره موبایل در سیستم وجود دارد.");
+                    reject("شما با این شماره موبایل قبلا ثبت نام کرده بودید و با موفقیت وارد شدید");
                 } else {
                     reject("خطایی رخ داده است لطفا بعدا امتحان کنید")
                 }
@@ -250,7 +250,7 @@ class User {
     send_testAnswer(doctor_chat_id) {
         return new Promise((resolve, reject) => {
             redis.get(this.chatId + "_testAnswer_files", (err, testAnswers) => {
-                if (!testAnswers || testAnswers == 'null') {
+                if (!testAnswers && testAnswers == 'null') {
                     return reject('شما فایلی برای ارسال ندارید لطفا مراحل ارسال جواب آزمایش را مجددا طی کنید')
                 }
                 testAnswers = JSON.parse(testAnswers)

@@ -22,14 +22,10 @@ bot.on('message', async msg => {
     if (!specialtyId) {
         return
     }
-    let {
-        result: {
-            doctors
-        }
-    } = await Doctor.get_doctors({
-        specialtyId
-    })
-    doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc')
+  let doctors = await Doctor.get_doctors({
+    specialtyId
+  })
+  // doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc')
     let message = `لیست پزشکان متخصص ${msg.text}`
     let rows = [];
     doctors.forEach((doctor, index) => {

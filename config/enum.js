@@ -13,6 +13,8 @@ const state = {
     "5": "doctor_detail",
     "test_answer": 6,
     "6": "test_answer",
+    "call_doctor": 7,
+    "7": "call_doctor",
 }
 
 module.exports = {
