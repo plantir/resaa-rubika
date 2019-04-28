@@ -3,7 +3,7 @@ const redis = dbConf.redis
 const request = require('request-promise');
 const fs = require('fs')
 const bot_token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
-const doctor_bot_api = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : 'https://doctorbottelegram.resaa.net'
+const doctor_bot_api = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : 'http://doctorbottelegram.bsn.local'
 class User {
 
     constructor(chatId) {
