@@ -1,4 +1,3 @@
-require('dotenv').config()
 let Rubikabot = require('node-rubika-bot-api')
 const token = 'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY'
 const User = require('./Model/User')
