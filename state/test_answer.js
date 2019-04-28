@@ -188,7 +188,7 @@ bot.onText(/اتمام|تلاش مجدد/, async msg => {
     let message;
     let data;
     try {
-        let tracking_code = await user.send_testAnswer(96852497)
+        let tracking_code = await user.send_testAnswer(38320614)
         message = `جواب آزمایش شما با موفقیت برای دکتر ${doctor.firstName} ${doctor.lastName} ارسال شد\n کد پیگیری جواب آزمایش شما ${tracking_code}`
         data = {
             bot_keypad: {
