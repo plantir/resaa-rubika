@@ -2,6 +2,7 @@ const User = require('../Model/User');
 const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
 const _enum = require('../config/enum');
+const _ = require('lodash');
 bot.onText(/جستجو بر اساس نام پزشک|جستجوی نام پزشک دیگر/, async msg => {
   let user = new User(msg.chat_id);
   user.state = _enum.state.search_doctor_with_name;
