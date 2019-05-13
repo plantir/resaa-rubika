@@ -1,6 +1,5 @@
 *.rar
 *.zip
 node_modules
-.vscode
 yarn.lock
 yarn-error.log
