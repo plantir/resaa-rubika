@@ -6,10 +6,10 @@ bot.on('message', async msg => {
       return;
     }
     let user = new User(msg.chat_id);
-    let last_state = await user.pop_history();
+    let data = await user.history;
 
-    if (last_state) {
-      msg.res.json(last_state.body);
+    if (data) {
+      msg.res.json(data);
     } else {
       msg.res.json({});
     }

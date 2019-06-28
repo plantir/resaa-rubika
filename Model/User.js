@@ -79,7 +79,33 @@ class User {
   set last_visit_doctor(doctor) {
     redis.set(this.chatId + '_last_visit_doctor', JSON.stringify(doctor));
   }
-
+  set history(data) {
+    return new Promise((resolve, reject) => {
+      redis.set(
+        this.chatId + '_state_history',
+        JSON.stringify(data),
+        (err, succsess) => {
+          if (succsess) {
+            return resolve(succsess);
+          }
+          if (err) {
+            return reject(err);
+          }
+        }
+      );
+    });
+  }
+  get history() {
+    return new Promise((resolve, reject) => {
+      redis.get(this.chatId + '_state_history', (err, state_history) => {
+        if (!state_history) {
+          return resolve(null);
+        }
+        state_history = JSON.parse(state_history);
+        resolve(state_history);
+      });
+    });
+  }
   register(phoneNumber) {
     return new Promise((resolve, reject) => {
       request({
@@ -137,61 +163,7 @@ class User {
       `${model.API_URL}/Rubika/Charge/Verify?orderId=${orderId}`
     );
   }
-  push_history({ text, body }) {
-    return new Promise((resolve, reject) => {
-      redis.get(this.chatId + '_state_history', async (err, state_history) => {
-        if (state_history) {
-          state_history = JSON.parse(state_history);
-        } else {
-          state_history = [];
-        }
-        let state = await this.state;
-        state_history.push({
-          state,
-          text,
-          body
-        });
-        state_history = JSON.stringify(state_history);
-        redis.set(
-          this.chatId + '_state_history',
-          state_history,
-          (err, succsess) => {
-            if (succsess) {
-              return resolve(succsess);
-            }
-            if (err) {
-              return reject(err);
-            }
-          }
-        );
-      });
-    });
-  }
-  pop_history() {
-    return new Promise((resolve, reject) => {
-      redis.get(this.chatId + '_state_history', (err, state_history) => {
-        if (!state_history) {
-          return resolve(null);
-        }
-        state_history = JSON.parse(state_history);
-        state_history.pop();
-        let last_history = state_history.pop();
-        state_history = JSON.stringify(state_history);
-        redis.set(
-          this.chatId + '_state_history',
-          state_history,
-          (err, succsess) => {
-            if (succsess) {
-              return resolve(last_history);
-            }
-            if (err) {
-              return reject(err);
-            }
-          }
-        );
-      });
-    });
-  }
+
   reset_state_history() {
     let state_history = JSON.stringify([]);
     redis.set(this.chatId + '_state_history', state_history);

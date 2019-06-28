@@ -171,6 +171,7 @@ bot.onText(_enum.regex_state.call_doctor, async msg => {
         data
       }
     );
+    msg.res.json({});
   }
 });
 

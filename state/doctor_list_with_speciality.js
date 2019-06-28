@@ -106,10 +106,9 @@ bot.on('message', async msg => {
       },
       text_message: message
     };
+    user.history = data;
+
     msg.res.json(data);
-    user.push_history({
-      body: data
-    });
   } catch (error) {
     console.log(error);
     msg.res.status(500).json(error);

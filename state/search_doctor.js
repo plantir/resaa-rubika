@@ -1,4 +1,4 @@
-// const User = require('../Model/User');
+const User = require('../Model/User');
 const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
 const _ = require('lodash');
@@ -7,6 +7,7 @@ bot.on('message', async msg => {
     if (!msg.aux_data || msg.aux_data.button_id != 'search_doctor') {
       return;
     }
+    let user = new User(msg.chat_id);
     let doctors;
     let is_code = /^\d+$/.test(msg.text);
     if (is_code) {
@@ -112,6 +113,7 @@ bot.on('message', async msg => {
       },
       text_message: message
     };
+    user.history = data;
     msg.res.json(data);
   } catch (error) {
     console.log(error);

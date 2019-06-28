@@ -48,7 +48,8 @@ class DoctorProvder {
               button_view: {
                 text: `تماس با دکتر ${doctor.firstName} ${doctor.lastName}`,
                 type: 'TextOnly'
-              }
+              },
+              reply_type: 'API'
             }
           ]
         });
