@@ -33,12 +33,14 @@ bot.on('message', async msg => {
         rows.push({
           buttons: [
             {
+              id: 'doctor_detail',
               type: 'Simple',
               button_view: {
                 text,
                 image_url,
                 type
-              }
+              },
+              reply_type: 'API'
             }
           ]
         });
@@ -46,12 +48,14 @@ bot.on('message', async msg => {
         let i = Math.ceil(index / 2) - 1;
 
         rows[i].buttons.push({
+          id: 'doctor_detail',
           type: 'Simple',
           button_view: {
             text,
             image_url,
             type
-          }
+          },
+          reply_type: 'API'
         });
       }
     });
