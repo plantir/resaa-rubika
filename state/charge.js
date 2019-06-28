@@ -98,7 +98,7 @@ bot.on('message', async msg => {
         charge_amount
       );
       message = ` شما درخواست شارژ به مبلغ ${charge_amount} تومان برای شماره موبایل ${phone} داده اید`;
-      message += `\n در صورت تایید موارد فوق بر روی پرداخت فشار دهید `;
+      message += `\n در صورت تایید موارد فوق بر روی پرداخت کلیک نمایید `;
 
       rows.push({
         buttons: [
