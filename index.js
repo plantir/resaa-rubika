@@ -18,8 +18,8 @@ require('./state/test_answer');
 require('./state/404');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
-  const port = 8080;
-  const token = bot.token;
+  const port = process.env.NODE_ENV == 'development' ? 8080 : 80;
+  // const token = bot.token;
   // const url = 'https://rubika.resaa.net';
   const express = require('express');
   const bodyParser = require('body-parser');
