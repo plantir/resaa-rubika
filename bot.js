@@ -1,6 +1,5 @@
 let Rubikabot = require('node-rubika-bot-api');
-const token =
-  'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY';
+const token = process.env.token;
 const User = require('./Model/User');
 // Create a bot that uses 'polling' to fetch new updates
 class Bot extends Rubikabot {
@@ -16,6 +15,7 @@ class Bot extends Rubikabot {
   }
 }
 const bot = new Bot(token, {
+  api_version: 1,
   polling: process.env.MODE == 'polling' ? true : false,
   start_message_id: 4749729786
 });
