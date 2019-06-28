@@ -4,8 +4,9 @@ require('dotenv').config({
 require('./state/start');
 require('./state/my_doctor');
 require('./state/medical_question');
-require('./state/search_doctor_with_name');
-require('./state/search_doctor_with_code');
+require('./state/search_doctor');
+// require('./state/search_doctor_with_name');
+// require('./state/search_doctor_with_code');
 require('./state/doctor_list_with_speciality');
 require('./state/doctor_detail');
 require('./state/call_doctor');
@@ -14,6 +15,7 @@ require('./state/charge');
 require('./state/back');
 require('./state/payment_return');
 require('./state/test_answer');
+require('./state/404');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
   const port = 8080;
@@ -25,11 +27,14 @@ if (process.env.MODE !== 'polling') {
   const app = express();
   app.use(bodyParser.json());
   app.post(`/`, (req, res) => {
-    req.body.message.res = res;
-    bot.processUpdate(req.body.message);
+    if (!req.body.message) {
+      return res.status(500).send('message not found');
+    }
+    let input = { ...req.body.message, res: res, reply_type: req.body.type };
+    bot.processUpdate(input);
   });
   app.get(`/`, (req, res) => {
-    res.sendStatus(200);
+    res.status(200).send('worked');
   });
 
   // Start Express Server

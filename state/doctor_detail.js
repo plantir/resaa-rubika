@@ -1,16 +1,15 @@
-const User = require('../Model/User');
-const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
-const _enum = require('../config/enum');
-const DoctorProvider = require('../provider/DoctorProvider')
-const _ = require('lodash')
-bot.onText(/\d+/, async msg => {
-    let id = +msg.text.replace(/[^\d+]/g, '')
-    let user = new User(msg.chat_id)
-    let state = await user.state;
-    if (state != _enum.state.select_doctor) {
-        return
+const DoctorProvider = require('../provider/DoctorProvider');
+
+bot.on('message', async msg => {
+  try {
+    if (!msg.aux_data || msg.aux_data.button_id != 'doctor_detail') {
+      return;
     }
-    return DoctorProvider.sned_doctor_profile(msg.chat_id, id)
- 
-})
+    let id = +msg.text.replace(/[^\d+]/g, '');
+    DoctorProvider.sned_doctor_profile(msg, id);
+  } catch (error) {
+    console.log(error);
+    msg.res.status(500).json(error);
+  }
+});

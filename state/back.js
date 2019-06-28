@@ -1,16 +1,20 @@
 const User = require('../Model/User');
-const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
-const _enum = require('../config/enum');
-const _ = require('lodash')
-bot.onText(/بازگشت/, async msg => {
-    if (msg.text == 'بازگشت به خانه') {
-        return
+bot.on('message', async msg => {
+  try {
+    if (!msg.aux_data || msg.aux_data.button_id != 'back') {
+      return;
     }
-    let user = new User(msg.chat_id)
-    let last_state = await user.pop_history()
-    user.state = last_state.state;
+    let user = new User(msg.chat_id);
+    let last_state = await user.pop_history();
+
     if (last_state) {
-        bot.sendMessage(msg.chat_id, last_state.text, last_state.body)
+      msg.res.json(last_state.body);
+    } else {
+      msg.res.json({});
     }
-})
+  } catch (error) {
+    console.log(error);
+    msg.res.status(500).json(error);
+  }
+});

@@ -1,42 +1,26 @@
-const User = require('../Model/User');
+// const User = require('../Model/User');
 const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
-const _enum = require('../config/enum');
 const _ = require('lodash');
 bot.on('message', async msg => {
   try {
-    if (
-      !msg.aux_data ||
-      msg.aux_data.button_id != 'doctor_list_by_speciality'
-    ) {
+    if (!msg.aux_data || msg.aux_data.button_id != 'search_doctor') {
       return;
     }
-    let user = new User(msg.chat_id);
-    user.state = _enum.state.select_doctor;
-    console.time('proc1');
-    let specialities = await Doctor.get_speciality_list();
-    let specialty_name = msg.text;
-    let specialtyId;
-    for (const item of specialities) {
-      if (item.title == specialty_name) {
-        specialtyId = item.id;
-        break;
-      }
+    let doctors;
+    let is_code = /^\d+$/.test(msg.text);
+    if (is_code) {
+      doctors = await Doctor.get_doctors({
+        code: msg.text
+      });
+    } else {
+      doctors = await Doctor.get_doctors({
+        name: msg.text
+      });
     }
-    console.timeEnd('proc1');
-    if (!specialtyId) {
-      return;
-    }
-    console.time('proc2');
-    let doctors = await Doctor.get_doctors({
-      specialtyId
-    });
-    console.timeEnd('proc2');
-    // doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc')
-    let message = `لیست پزشکان متخصص ${msg.text}`;
+    doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc');
+    let message = `نتایج جستجو برای پزشک ${msg.text}`;
     let rows = [];
-    console.time('proc3');
-
     doctors.forEach((doctor, index) => {
       let text = `${doctor.subscriberNumber} ${doctor.firstName} ${
         doctor.lastName
@@ -49,14 +33,12 @@ bot.on('message', async msg => {
         rows.push({
           buttons: [
             {
-              id: 'doctor_detail',
               type: 'Simple',
               button_view: {
-                image_url,
                 text,
+                image_url,
                 type
-              },
-              reply_type: 'API'
+              }
             }
           ]
         });
@@ -64,25 +46,45 @@ bot.on('message', async msg => {
         let i = Math.ceil(index / 2) - 1;
 
         rows[i].buttons.push({
-          id: 'doctor_detail',
           type: 'Simple',
           button_view: {
-            image_url,
             text,
+            image_url,
             type
-          },
-          reply_type: 'API'
+          }
         });
       }
     });
-    console.timeEnd('proc3');
+    if (doctors.length === 0) {
+      message = `نتیجه ای برای پزشک "${
+        msg.text
+      }" یافت نشد\nشما میتوانید از طریق تماس با پشتیبانی پزشک خود را به رسا اضافه کنید`;
+      rows.push({
+        buttons: [
+          {
+            type: 'Call',
+            button_view: {
+              text: ' تماس با پشتیبانی برای اضافه شدن پزشک',
+              type: 'TextOnly'
+            },
+            button_call: {
+              phone_number: '02174471300'
+            }
+          }
+        ]
+      });
+    }
     rows.push({
       buttons: [
         {
-          type: 'Simple',
+          id: 'search_doctor',
+          type: 'Textbox',
           button_view: {
-            text: 'بازگشت به صفحه تخصص ها',
+            text: 'جستجو کد یا نام پزشک دیگر',
             type: 'TextOnly'
+          },
+          button_textbox: {
+            type_keypad: 'String'
           },
           reply_type: 'API'
         }
@@ -107,9 +109,6 @@ bot.on('message', async msg => {
       text_message: message
     };
     msg.res.json(data);
-    user.push_history({
-      body: data
-    });
   } catch (error) {
     console.log(error);
     msg.res.status(500).json(error);

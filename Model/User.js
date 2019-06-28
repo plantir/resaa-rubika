@@ -325,6 +325,17 @@ class User {
         });
     });
   }
+  async book_doctor(subscriberNumber) {
+    let phone = await this.phone;
+    return request({
+      method: 'POST',
+      uri: `${
+        this.API_URL
+      }/Docotors/${subscriberNumber}/CommunicationBooking?patientPhoneNumber=${phone}`,
+      body: {},
+      json: true
+    });
+  }
 }
 
 module.exports = User;
