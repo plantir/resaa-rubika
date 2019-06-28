@@ -43,7 +43,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
       let price = await Doctor.get_time_price(visit_doctor, phone);
       let { costPerMinute, duration, isFreeFirstCall } = price.result.quote;
       if (isFreeFirstCall) {
-        // await user.book_doctor(doctor.subscriberNumber);
+        await user.book_doctor(doctor.subscriberNumber);
         bot.sendMessage(
           msg.chat_id,
           `شما تماس اول را مهمان رسا هستید\nشما میتوانید به مدت ${duration} دقیقه با دکتر 🕐 ${
@@ -118,7 +118,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
           data
         });
       } else {
-        // await user.book_doctor(doctor.subscriberNumber);
+        await user.book_doctor(doctor.subscriberNumber);
         rows.push({
           buttons: [
             {

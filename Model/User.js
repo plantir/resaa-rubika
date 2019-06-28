@@ -331,7 +331,7 @@ class User {
       method: 'POST',
       uri: `${
         this.API_URL
-      }/Docotors/${subscriberNumber}/CommunicationBooking?patientPhoneNumber=${phone}`,
+      }/Doctors/${subscriberNumber}/CommunicationBooking?patientPhoneNumber=${phone}`,
       body: {},
       json: true
     });
