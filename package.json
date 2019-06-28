@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "release": "git push origin next && git push origin master && git push dist next && git push dist master"
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
