@@ -18,9 +18,12 @@ bot.on('message', async msg => {
     user.state = _enum.state.select_doctor;
     console.time('proc1');
     let specialtyId;
+    let message;
     if (msg.aux_data.button_id == 'general_practitioner') {
       specialtyId = 43;
+      message = `لیست پزشکان عمومی`;
     } else {
+      message = `لیست پزشکان متخصص ${msg.text}`;
       let specialities = await Doctor.get_speciality_list();
       let specialty_name = msg.text;
       for (const item of specialities) {
@@ -40,7 +43,7 @@ bot.on('message', async msg => {
     });
     console.timeEnd('proc2');
     // doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc')
-    let message = `لیست پزشکان متخصص ${msg.text}`;
+
     let rows = [];
     console.time('proc3');
 
