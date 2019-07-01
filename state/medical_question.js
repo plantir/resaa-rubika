@@ -46,6 +46,19 @@ bot.onText(_enum.regex_state.speciality, async msg => {
     rows.push({
       buttons: [
         {
+          id: 'general_practitioner',
+          type: 'Simple',
+          button_view: {
+            text: 'نمیدانم چه تخصصی نیاز دارم',
+            type: 'TextOnly'
+          },
+          reply_type: 'API'
+        }
+      ]
+    });
+    rows.push({
+      buttons: [
+        {
           type: 'Simple',
           button_view: {
             text: 'بازگشت به خانه',

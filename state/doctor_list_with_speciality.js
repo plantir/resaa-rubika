@@ -7,20 +7,27 @@ bot.on('message', async msg => {
   try {
     if (
       !msg.aux_data ||
-      msg.aux_data.button_id != 'doctor_list_by_speciality'
+      !(
+        msg.aux_data.button_id == 'doctor_list_by_speciality' ||
+        msg.aux_data.button_id == 'general_practitioner'
+      )
     ) {
       return;
     }
     let user = new User(msg.chat_id);
     user.state = _enum.state.select_doctor;
     console.time('proc1');
-    let specialities = await Doctor.get_speciality_list();
-    let specialty_name = msg.text;
     let specialtyId;
-    for (const item of specialities) {
-      if (item.title == specialty_name) {
-        specialtyId = item.id;
-        break;
+    if (msg.aux_data.button_id == 'msg.aux_data.button_id') {
+      specialtyId = 43;
+    } else {
+      let specialities = await Doctor.get_speciality_list();
+      let specialty_name = msg.text;
+      for (const item of specialities) {
+        if (item.title == specialty_name) {
+          specialtyId = item.id;
+          break;
+        }
       }
     }
     console.timeEnd('proc1');
