@@ -18,7 +18,7 @@ bot.on('message', async msg => {
     user.state = _enum.state.select_doctor;
     console.time('proc1');
     let specialtyId;
-    if (msg.aux_data.button_id == 'msg.aux_data.button_id') {
+    if (msg.aux_data.button_id == 'general_practitioner') {
       specialtyId = 43;
     } else {
       let specialities = await Doctor.get_speciality_list();
