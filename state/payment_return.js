@@ -65,7 +65,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
                           type: 'TextOnly'
                         },
                         button_call: {
-                          phone_number: '02174471111'
+                          phone_number: '02174471402'
                         }
                       }
                     ]
@@ -127,7 +127,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
                 type: 'TextOnly'
               },
               button_call: {
-                phone_number: '02174471111'
+                phone_number: '02174471402'
               }
             }
           ]
