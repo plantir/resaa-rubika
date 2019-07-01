@@ -8,7 +8,7 @@ bot.onText(_enum.regex_state.start, async msg => {
     user.reset_state_history();
     user.state = _enum.state.start;
     let phone = await user.phone;
-    let message = `به رسا خوش آمدید`;
+    let message = `به رسا خوش آمدید.\nبرای اطلاعات بیشتر ویدیو را مشاهده بفرمایید.`;
     let rows = [];
     if (phone) {
       rows.push({
@@ -31,7 +31,7 @@ bot.onText(_enum.regex_state.start, async msg => {
             {
               type: 'Simple',
               button_view: {
-                text: 'سوال پزشکی دارم',
+                text: 'انتخاب پزشکان دیگر',
                 type: 'TextOnly'
               },
               reply_type: 'API'

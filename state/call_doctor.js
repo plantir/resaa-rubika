@@ -143,6 +143,23 @@ bot.onText(_enum.regex_state.call_doctor, async msg => {
         }
       ]
     });
+    let amount_list = calc_amount(costPerMinute, minute_array);
+    message = `در صورت تمایل برای افزایش اعتبار میتوانید یکی از گزینه ها را انتخاب کنید`;
+    for (let item of amount_list) {
+      rows.push({
+        buttons: [
+          {
+            id: 'charge',
+            type: 'Simple',
+            button_view: {
+              text: `${item.perioud} دقیقه ${item.amount} تومان`,
+              type: 'TextOnly'
+            },
+            reply_type: 'API'
+          }
+        ]
+      });
+    }
     rows.push({
       buttons: [
         {
