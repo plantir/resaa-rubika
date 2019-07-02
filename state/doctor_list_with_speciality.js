@@ -16,7 +16,7 @@ bot.on('message', async msg => {
     }
     let user = new User(msg.chat_id);
     user.state = _enum.state.select_doctor;
-    console.time('proc1');
+    console.time('map_speciality_name_to_id');
     let specialtyId;
     let message;
     if (msg.aux_data.button_id == 'general_practitioner') {
@@ -33,19 +33,16 @@ bot.on('message', async msg => {
         }
       }
     }
-    console.timeEnd('proc1');
+    console.timeEnd('map_speciality_name_to_id');
     if (!specialtyId) {
       return;
     }
-    console.time('proc2');
     let doctors = await Doctor.get_doctors({
       specialtyId
     });
-    console.timeEnd('proc2');
     // doctors = _.orderBy(doctors, 'currentlyAvailable', 'desc')
 
     let rows = [];
-    console.time('proc3');
 
     doctors.forEach((doctor, index) => {
       let text = `${doctor.subscriberNumber} ${doctor.firstName} ${
@@ -85,7 +82,6 @@ bot.on('message', async msg => {
         });
       }
     });
-    console.timeEnd('proc3');
     rows.push({
       buttons: [
         {
