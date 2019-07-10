@@ -150,10 +150,11 @@ class DoctorProvder {
       try {
         await bot.sendMessage(msg.chat_id, '', {
           data: {
+            ...data,
             file_id: doctor_image_id
           }
         });
-        await bot.sendMessage(msg.chat_id, message, {});
+        await bot.sendMessage(msg.chat_id, message, { data });
         bot.sendMessage(
           msg.chat_id,
           time_message,
