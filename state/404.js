@@ -38,7 +38,7 @@ bot.on('message', async msg => {
                 {
                   type: 'Simple',
                   button_view: {
-                    text: 'انتخاب پزشکان دیگر',
+                    text: 'پرسش از پزشک خودم',
                     type: 'TextOnly'
                   },
                   reply_type: 'API'
@@ -50,7 +50,7 @@ bot.on('message', async msg => {
                 {
                   type: 'Simple',
                   button_view: {
-                    text: 'پرسش از پزشک خودم',
+                    text: 'انتخاب پزشکان دیگر',
                     type: 'TextOnly'
                   },
                   reply_type: 'API'

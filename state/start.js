@@ -31,7 +31,7 @@ bot.onText(_enum.regex_state.start, async msg => {
             {
               type: 'Simple',
               button_view: {
-                text: 'انتخاب پزشکان دیگر',
+                text: 'پرسش از پزشک خودم',
                 type: 'TextOnly'
               },
               reply_type: 'API'
@@ -43,7 +43,7 @@ bot.onText(_enum.regex_state.start, async msg => {
             {
               type: 'Simple',
               button_view: {
-                text: 'پرسش از پزشک خودم',
+                text: 'انتخاب پزشکان دیگر',
                 type: 'TextOnly'
               },
               reply_type: 'API'
