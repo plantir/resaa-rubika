@@ -24,8 +24,23 @@ if (process.env.MODE !== 'polling') {
   const express = require('express');
   const bodyParser = require('body-parser');
   // bot.updateBotEndpoints(url);
+  const User = require('./Model/User');
   const app = express();
   app.use(bodyParser.json());
+  function modifyResponseBody(req, res, next) {
+    var oldSend = res.send;
+    res.send = function(data) {
+      oldSend.apply(res, arguments);
+      if (data == {} || data == '{}') {
+        return;
+      }
+      let user = new User(req.body.message.chat_id);
+      user.history = data;
+    };
+    next();
+  }
+
+  app.use(modifyResponseBody);
   app.post(`/`, (req, res) => {
     if (!req.body.message) {
       return res.status(500).send('message not found');

@@ -1,5 +1,6 @@
 const bot = require('../bot');
 const _enum = require('../config/enum');
+const User = require('../Model/User');
 bot.on('message', async msg => {
   try {
     if (msg.aux_data) {
@@ -9,8 +10,79 @@ bot.on('message', async msg => {
       return item.test(msg.text);
     });
     if (!is_exist) {
-      msg.res.json({});
-      bot.sendMessage(msg.chat_id, 'دستور نامعتبر');
+      let user = new User(msg.chat_id);
+      let data = await user.history;
+      if (data.length == 0) {
+        // user.reset_state_history();
+        user.state = _enum.state.start;
+        let phone = await user.phone;
+        let rows = [];
+        if (phone) {
+          rows.push({
+            buttons: [
+              {
+                type: 'Simple',
+                button_view: {
+                  text: 'شارژ اعتبار رسا',
+                  type: 'TextOnly'
+                },
+                reply_type: 'API'
+              }
+            ]
+          });
+        }
+        rows.push(
+          ...[
+            {
+              buttons: [
+                {
+                  type: 'Simple',
+                  button_view: {
+                    text: 'انتخاب پزشکان دیگر',
+                    type: 'TextOnly'
+                  },
+                  reply_type: 'API'
+                }
+              ]
+            },
+            {
+              buttons: [
+                {
+                  type: 'Simple',
+                  button_view: {
+                    text: 'پرسش از پزشک خودم',
+                    type: 'TextOnly'
+                  },
+                  reply_type: 'API'
+                }
+              ]
+            }
+          ]
+        );
+        rows.push({
+          buttons: [
+            {
+              type: 'Call',
+              button_view: {
+                text: 'تماس با پشتیبانی',
+                type: 'TextOnly'
+              },
+              button_call: {
+                phone_number: '02174471300'
+              }
+            }
+          ]
+        });
+        data = {
+          bot_keypad: {
+            rows
+          }
+        };
+      } else {
+        data = JSON.parse(data);
+      }
+
+      bot.sendMessage(msg.chat_id, 'دستور نامعتبر', { data });
     }
   } catch (error) {
     console.log(error);
