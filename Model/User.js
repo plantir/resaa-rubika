@@ -79,27 +79,66 @@ class User {
   set last_visit_doctor(doctor) {
     redis.set(this.chatId + '_last_visit_doctor', JSON.stringify(doctor));
   }
-  set history(data) {
-    return new Promise((resolve, reject) => {
-      redis.set(this.chatId + '_state_history', data, (err, succsess) => {
-        if (succsess) {
-          return resolve(succsess);
+  push_history(data) {
+    return new Promise(async (resolve, reject) => {
+      let history = await this.get_history();
+      history.push(data);
+      redis.set(
+        this.chatId + '_state_history',
+        JSON.stringify(history),
+        (err, succsess) => {
+          if (succsess) {
+            return resolve(succsess);
+          }
+          if (err) {
+            return reject(err);
+          }
         }
-        if (err) {
-          return reject(err);
-        }
-      });
+      );
     });
   }
-  get history() {
+
+  pop_history() {
     return new Promise((resolve, reject) => {
       redis.get(this.chatId + '_state_history', (err, state_history) => {
         if (!state_history) {
           return resolve(null);
         }
         state_history = JSON.parse(state_history);
+        let history = state_history.pop();
+        if (history) {
+          history = JSON.parse(history);
+          resolve(history);
+        }
+        this.set_history(state_history);
+      });
+    });
+  }
+  get_history() {
+    return new Promise((resolve, reject) => {
+      redis.get(this.chatId + '_state_history', (err, state_history) => {
+        if (!state_history) {
+          return resolve([]);
+        }
+        state_history = JSON.parse(state_history);
         resolve(state_history);
       });
+    });
+  }
+  set_history(history) {
+    return new Promise((resolve, reject) => {
+      redis.set(
+        this.chatId + '_state_history',
+        JSON.stringify(history),
+        (err, succsess) => {
+          if (succsess) {
+            return resolve(succsess);
+          }
+          if (err) {
+            return reject(err);
+          }
+        }
+      );
     });
   }
   register(phoneNumber) {

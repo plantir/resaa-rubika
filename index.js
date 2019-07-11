@@ -31,11 +31,17 @@ if (process.env.MODE !== 'polling') {
     var oldSend = res.send;
     res.send = function(data) {
       oldSend.apply(res, arguments);
-      if (data == {} || data == '{}' || !req.body.message) {
+      if (
+        data == {} ||
+        data == '{}' ||
+        !req.body.message ||
+        (req.body.message.aux_data &&
+          req.body.message.aux_data.button_id == 'back')
+      ) {
         return;
       }
       let user = new User(req.body.message.chat_id);
-      user.history = data;
+      user.push_history(data);
     };
     next();
   }

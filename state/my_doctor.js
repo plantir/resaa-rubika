@@ -65,8 +65,6 @@ bot.onText(_enum.regex_state.my_doctor, async msg => {
       rows
     }
   };
-  if (doctor) {
-    // user.history = data;
-  }
+
   msg.res.json(data);
 });

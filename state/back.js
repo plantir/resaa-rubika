@@ -6,7 +6,8 @@ bot.on('message', async msg => {
       return;
     }
     let user = new User(msg.chat_id);
-    let data = await user.history;
+    await user.pop_history();
+    let data = await user.pop_history();
 
     if (data) {
       msg.res.json(data);

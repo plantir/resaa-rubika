@@ -11,8 +11,8 @@ bot.on('message', async msg => {
     });
     if (!is_exist) {
       let user = new User(msg.chat_id);
-      let data = await user.history;
-      if (data.length == 0) {
+      let data = await user.pop_history();
+      if (!data) {
         // user.reset_state_history();
         user.state = _enum.state.start;
         let phone = await user.phone;
