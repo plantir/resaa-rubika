@@ -31,7 +31,7 @@ if (process.env.MODE !== 'polling') {
     var oldSend = res.send;
     res.send = function(data) {
       oldSend.apply(res, arguments);
-      if (data == {} || data == '{}') {
+      if (data == {} || data == '{}' || !req.body.message) {
         return;
       }
       let user = new User(req.body.message.chat_id);

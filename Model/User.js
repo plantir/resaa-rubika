@@ -81,18 +81,14 @@ class User {
   }
   set history(data) {
     return new Promise((resolve, reject) => {
-      redis.set(
-        this.chatId + '_state_history',
-        JSON.stringify(data),
-        (err, succsess) => {
-          if (succsess) {
-            return resolve(succsess);
-          }
-          if (err) {
-            return reject(err);
-          }
+      redis.set(this.chatId + '_state_history', data, (err, succsess) => {
+        if (succsess) {
+          return resolve(succsess);
         }
-      );
+        if (err) {
+          return reject(err);
+        }
+      });
     });
   }
   get history() {

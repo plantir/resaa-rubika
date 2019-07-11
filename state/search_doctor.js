@@ -113,7 +113,7 @@ bot.on('message', async msg => {
       },
       text_message: message
     };
-    user.history = data;
+    // user.history = data;
     msg.res.json(data);
   } catch (error) {
     console.log(error);

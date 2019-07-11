@@ -78,10 +78,7 @@ bot.on('message', async msg => {
             rows
           }
         };
-      } else {
-        data = JSON.parse(data);
       }
-
       bot.sendMessage(msg.chat_id, 'دستور نامعتبر', { data });
     }
   } catch (error) {
