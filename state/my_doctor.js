@@ -6,7 +6,7 @@ bot.onText(_enum.regex_state.my_doctor, async msg => {
   let doctor = await user.last_visit_doctor;
   let rows = [];
   if (doctor) {
-    let text = `${doctor.lastName} ${doctor.firstName}`;
+    let text = `${doctor.firstName} ${doctor.lastName}`;
     let image_url = `https://webapi.resaa.net/Rubika/Doctors/${
       doctor.subscriberNumber
     }/Image/${doctor.currentlyAvailable ? 'Available' : 'Unavailable'}`;

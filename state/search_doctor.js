@@ -23,7 +23,7 @@ bot.on('message', async msg => {
     let message = `نتایج جستجو برای پزشک ${msg.text}`;
     let rows = [];
     doctors.forEach((doctor, index) => {
-      let text = `${doctor.lastName} ${doctor.firstName}`;
+      let text = `${doctor.firstName} ${doctor.lastName}`;
       let image_url = `https://webapi.resaa.net/Rubika/Doctors/${
         doctor.subscriberNumber
       }/Image/${doctor.currentlyAvailable ? 'Available' : 'Unavailable'}`;
