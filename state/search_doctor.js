@@ -23,9 +23,7 @@ bot.on('message', async msg => {
     let message = `نتایج جستجو برای پزشک ${msg.text}`;
     let rows = [];
     doctors.forEach((doctor, index) => {
-      let text = `${doctor.subscriberNumber} ${doctor.firstName} ${
-        doctor.lastName
-      }`;
+      let text = `${doctor.lastName} ${doctor.firstName}`;
       let image_url = `https://webapi.resaa.net/Rubika/Doctors/${
         doctor.subscriberNumber
       }/Image/${doctor.currentlyAvailable ? 'Available' : 'Unavailable'}`;
@@ -34,7 +32,7 @@ bot.on('message', async msg => {
         rows.push({
           buttons: [
             {
-              id: 'doctor_detail',
+              id: `doctor_detail_${doctor.subscriberNumber}`,
               type: 'Simple',
               button_view: {
                 text,
@@ -49,7 +47,7 @@ bot.on('message', async msg => {
         let i = Math.ceil(index / 2) - 1;
 
         rows[i].buttons.push({
-          id: 'doctor_detail',
+          id: `doctor_detail_${doctor.subscriberNumber}`,
           type: 'Simple',
           button_view: {
             text,
