@@ -5,7 +5,7 @@ const _enum = require('../config/enum');
 bot.onText(_enum.regex_state.charge, async msg => {
   let message = 'جهت شارژ اعتبار خود یکی از مبالغ زیر را انتخاب نمایید';
   let rows = [];
-  let amounts = [1000, 2000, 3000];
+  let amounts = [10000, 20000, 30000];
   for (let amount of amounts) {
     rows.push({
       buttons: [

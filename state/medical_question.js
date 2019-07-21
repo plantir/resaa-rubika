@@ -8,11 +8,11 @@ bot.onText(_enum.regex_state.speciality, async msg => {
     let specialities = await Doctor.get_speciality_list();
     specialities.forEach((item, index) => {
       let text = `${item.title}`;
-      let image_url = `https://webapi.resaa.net/${item.imagePath}`;
+      let image_url = `https://webapi.resaa.net/${item.iconPath}`;
       let type = 'TextImgBig';
-      if (index > 11) {
-        return;
-      }
+      // if (index > 21) {
+      //   return;
+      // }
       if (index % 2 === 0) {
         rows.push({
           buttons: [
