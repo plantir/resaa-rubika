@@ -15,7 +15,7 @@ class Doctor {
     this.fields = 'subscriberNumber,firstName,lastName,currentlyAvailable';
   }
 
-  static get_doctors({ limit = 20, offset = 0, specialtyId, code, name }) {
+  static get_doctors({ limit = 100, offset = 0, specialtyId, code, name }) {
     let model = new Doctor();
     let uri = `${model.API_URL}/Doctors?fields=${
       model.fields
