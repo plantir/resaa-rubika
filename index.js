@@ -63,11 +63,12 @@ if (process.env.MODE !== 'polling') {
       res.send({ user_count, register_count });
     });
   });
-  app.get('/addAllUser', () => {
-    redis.keys('rubika_b_*', (err, data) => {
+  app.get('/addAllUser', (req, res) => {
+    redis.keys(res.query.regex || 'rubika_b_*', (err, data) => {
+      res.send(data);
       for (const item of data) {
-        let chat_id = /rubika_(b_[0-9]{8,8}_[0-9]{2,2})/.exec(item);
-        if (chat_id[1]) {
+        let chat_id = /rubika_(b_[0-9]+_[0-9]+)/.exec(item);
+        if (chat_id && chat_id[1]) {
           redis.sadd('members', chat_id[1]);
         }
       }
