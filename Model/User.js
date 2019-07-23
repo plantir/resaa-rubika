@@ -15,6 +15,7 @@ class User {
         ? 'https://webapi.resaa.net'
         : 'http://resa-web-api.bsn.local';
     this.chatId = chatId;
+    this.addUser();
   }
   get state() {
     return new Promise((resolve, reject) => {
@@ -342,6 +343,10 @@ class User {
       body: {},
       json: true
     });
+  }
+
+  addUser() {
+    redis.sadd('members', this.chatId);
   }
 }
 

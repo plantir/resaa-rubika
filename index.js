@@ -16,6 +16,8 @@ require('./state/back');
 require('./state/payment_return');
 require('./state/test_answer');
 require('./state/404');
+const { redis } = require('./config/db.config');
+const User = require('./Model/User');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
   const port = process.env.NODE_ENV == 'development' ? 8080 : 80;
@@ -47,6 +49,30 @@ if (process.env.MODE !== 'polling') {
   }
 
   app.use(modifyResponseBody);
+  app.get('/report', (req, res) => {
+    redis.smembers('members', async (err, data) => {
+      let user_count = data.length;
+      let register_count = 0;
+      for (let chat_id of data) {
+        let user = new User(chat_id);
+        let phone = await user.phone;
+        if (phone) {
+          register_count++;
+        }
+      }
+      res.send({ user_count, register_count });
+    });
+  });
+  app.get('/addAllUser', () => {
+    redis.keys('rubika_b_*', (err, data) => {
+      for (const item of data) {
+        let chat_id = /rubika_(b_[0-9]{8,8}_[0-9]{2,2})/.exec(item);
+        if (chat_id[1]) {
+          redis.sadd('members', chat_id[1]);
+        }
+      }
+    });
+  });
   app.post(`/`, (req, res) => {
     if (!req.body.message) {
       return res.status(500).send('message not found');
