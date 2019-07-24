@@ -2,6 +2,46 @@ const User = require('../Model/User');
 const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
 const _enum = require('../config/enum');
+bot.onText(/تست شارژ/, async msg => {
+  let message = 'جهت شارژ اعتبار خود یکی از مبالغ زیر را انتخاب نمایید';
+  let rows = [];
+  let amounts = [1000, 20000, 30000, 40000, 50000];
+  for (let amount of amounts) {
+    rows.push({
+      buttons: [
+        {
+          id: 'charge',
+          type: 'Simple',
+          button_view: {
+            text: `${amount} تومان`,
+            type: 'TextOnly'
+          },
+          reply_type: 'API'
+        }
+      ]
+    });
+  }
+
+  rows.push({
+    buttons: [
+      {
+        type: 'Simple',
+        button_view: {
+          text: 'بازگشت به خانه',
+          type: 'TextOnly'
+        },
+        reply_type: 'API'
+      }
+    ]
+  });
+  let data = {
+    text_message: message,
+    bot_keypad: {
+      rows
+    }
+  };
+  msg.res.json(data);
+});
 bot.onText(_enum.regex_state.charge, async msg => {
   let message = 'جهت شارژ اعتبار خود یکی از مبالغ زیر را انتخاب نمایید';
   let rows = [];
