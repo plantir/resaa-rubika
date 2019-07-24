@@ -18,6 +18,7 @@ const regex_state = {
   start: /^شروع$|بازگشت به خانه/,
   call_doctor: /تماس با دکتر *.*/,
   charge: /شارژ اعتبار رسا/,
+  test_charge: /تست شارژ/,
   speciality: /انتخاب پزشکان دیگر|بازگشت به صفحه تخصص ها/,
   my_doctor: /پرسش از پزشک خودم/,
   payment_check: /بررسی وضعیت پرداخت/,
