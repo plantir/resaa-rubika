@@ -346,7 +346,9 @@ class User {
   }
 
   addUser() {
-    redis.sadd('members', this.chatId);
+    if (this.chatId) {
+      redis.sadd('members', this.chatId);
+    }
   }
 }
 

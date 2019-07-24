@@ -30,14 +30,14 @@ class Doctor {
       uri += `&name=${name}`;
     }
     return new Promise((resolve, reject) => {
-      console.time('get_doctor_list_from_api');
+      // console.time('get_doctor_list_from_api');
       request({
         method: 'GET',
         json: true,
         uri: encodeURI(uri)
       })
         .then(res => {
-          console.timeEnd('get_doctor_list_from_api');
+          // console.timeEnd('get_doctor_list_from_api');
           console.time('sort_random_doctors');
           let available = res.result.doctors.filter(
             item => item.currentlyAvailable
