@@ -17,7 +17,6 @@ require('./state/payment_return');
 require('./state/test_answer');
 require('./state/404');
 const { redis } = require('./config/db.config');
-const User = require('./Model/User');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
   const port = process.env.NODE_ENV == 'development' ? 8080 : 80;
@@ -44,6 +43,7 @@ if (process.env.MODE !== 'polling') {
       }
       let user = new User(req.body.message.chat_id);
       user.push_history(data);
+      user.log_history(req.body.message.text);
     };
     next();
   }

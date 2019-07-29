@@ -1,5 +1,6 @@
-const dbConf = require('../config/db.config');
-const redis = dbConf.redis;
+const { redis } = require('../config/db.config');
+const { connection } = require('../config/db.config');
+const moment = require('moment');
 const request = require('request-promise');
 const fs = require('fs');
 const bot_token =
@@ -25,6 +26,7 @@ class User {
     });
   }
   set state(state) {
+    // inja bayad log bezanam to db
     redis.set(this.chatId + '_state', state);
   }
   get phone() {
@@ -98,7 +100,14 @@ class User {
       );
     });
   }
-
+  log_history(text) {
+    let query = `INSERT INTO \`user_history\` (\`chat_id\`, \`text\`, \`created_at\`) VALUES (${connection.escape(
+      this.chatId
+    )},${connection.escape(text)}, ${connection.escape(new Date())})`;
+    connection.query(query, (err, rows) => {
+      console.log(err);
+    });
+  }
   pop_history() {
     return new Promise((resolve, reject) => {
       redis.get(this.chatId + '_state_history', (err, state_history) => {
