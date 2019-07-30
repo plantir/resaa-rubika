@@ -1,13 +1,13 @@
 const mysql = require('mysql');
 const db_config = {
   // timezone: 'utc',
-  host: process.env.NODE_ENV == 'development' ? '127.0.0.1' : '78.47.157.66',
-  user: process.env.NODE_ENV == 'development' ? 'root' : 'cashineh_tracker',
-  password: process.env.NODE_ENV == 'development' ? '' : 'LyHz2juqJ2wm5WAm',
+  host: process.env.NODE_ENV == 'development' ? '127.0.0.1' : '127.0.0.1',
+  user: process.env.NODE_ENV == 'development' ? 'root' : 'armin',
+  password: process.env.NODE_ENV == 'development' ? '' : 'Merlin110',
   database:
     process.env.NODE_ENV == 'development'
       ? 'ressa_rubika_db'
-      : 'ressa_rubika_db'
+      : 'resaa_rubika_db'
 };
 const connection = mysql.createConnection(db_config);
 
