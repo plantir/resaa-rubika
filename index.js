@@ -16,7 +16,7 @@ require('./state/back');
 require('./state/payment_return');
 require('./state/test_answer');
 require('./state/404');
-const { redis } = require('./config/db.config');
+const { redis, connection } = require('./config/db.config');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
   const port = process.env.NODE_ENV == 'development' ? 8080 : 80;
@@ -61,6 +61,11 @@ if (process.env.MODE !== 'polling') {
         }
       }
       res.send({ user_count, register_count });
+    });
+  });
+  app.get('/history', (req, res) => {
+    connection.query(`select * from user_history`, (error, rows) => {
+      res.send(rows);
     });
   });
   app.get('/addAllUser', (req, res) => {
