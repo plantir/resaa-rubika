@@ -17,6 +17,7 @@ require('./state/payment_return');
 require('./state/test_answer');
 require('./state/404');
 const { redis, connection } = require('./config/db.config');
+const moment = require('moment');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
   const port = process.env.NODE_ENV == 'development' ? 8080 : 80;
@@ -65,7 +66,14 @@ if (process.env.MODE !== 'polling') {
   });
   app.get('/history', (req, res) => {
     connection.query(`select * from user_history`, (error, rows) => {
-      res.send(rows);
+      res.send(
+        rows.map(item => {
+          item.created_at = moment(item.created_at).format(
+            'YYYY-MM-DD HH:mm:ss'
+          );
+          return item;
+        })
+      );
     });
   });
   app.get('/addAllUser', (req, res) => {
