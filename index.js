@@ -44,10 +44,10 @@ if (process.env.MODE !== 'polling') {
       }
       let user = new User(req.body.message.chat_id);
       user.push_history(data);
-      user.log_history(
-        req.body.message.text,
-        req.body.message.aux_data.button_id
-      );
+      // user.log_history(
+      //   req.body.message.text,
+      //   req.body.message.aux_data.button_id
+      // );
     };
     next();
   }
@@ -96,6 +96,11 @@ if (process.env.MODE !== 'polling') {
     }
     let input = { ...req.body.message, res: res, reply_type: req.body.type };
     bot.processUpdate(input);
+    let user = new User(req.body.message.chat_id);
+    user.log_history(
+      req.body.message.text,
+      req.body.message.aux_data ? req.body.message.aux_data.button_id : null
+    );
   });
   app.get(`/`, (req, res) => {
     res.status(200).send('worked');
