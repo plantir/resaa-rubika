@@ -100,10 +100,12 @@ class User {
       );
     });
   }
-  log_history(text) {
-    let query = `INSERT INTO \`user_history\` (\`chat_id\`, \`text\`, \`created_at\`) VALUES (${connection.escape(
+  log_history(text, button_id) {
+    let query = `INSERT INTO \`user_history\` (\`chat_id\`, \`text\`,\`button_id\`, \`created_at\`) VALUES (${connection.escape(
       this.chatId
-    )},${connection.escape(text)}, ${connection.escape(new Date())})`;
+    )},${connection.escape(text)},${connection.escape(
+      button_id
+    )}, ${connection.escape(new Date())})`;
     connection.query(query, (err, rows) => {
       console.log(err);
     });

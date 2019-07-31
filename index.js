@@ -44,7 +44,10 @@ if (process.env.MODE !== 'polling') {
       }
       let user = new User(req.body.message.chat_id);
       user.push_history(data);
-      user.log_history(req.body.message.text);
+      user.log_history(
+        req.body.message.text,
+        req.body.message.aux_data.button_id
+      );
     };
     next();
   }
