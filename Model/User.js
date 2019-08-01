@@ -297,7 +297,7 @@ class User {
     }
     return new Promise((resolve, reject) => {
       redis.get(this.chatId + '_testAnswer_files', (err, files) => {
-        if (!files && files == 'null') {
+        if (!files || files == 'null') {
           return reject(
             'شما فایلی برای ارسال ندارید لطفا مراحل ارسال جواب آزمایش را مجددا طی کنید'
           );

@@ -167,7 +167,8 @@ class Doctor {
             case 0:
               resolve({
                 status: 'ok',
-                request_price: request_price
+                request_price: request_price,
+                chat_id: res.result.quote.destinations[0].identifier
               });
               break;
             case 1:

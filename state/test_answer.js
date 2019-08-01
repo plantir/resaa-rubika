@@ -191,6 +191,7 @@ bot.onText(_enum.regex_state.reset_file_upload, async msg => {
       ]
     }
   };
+  msg.res.json(data);
   return bot.sendMessage(msg.chat_id, message, {
     data
   });
@@ -253,13 +254,19 @@ bot.on('file', async msg => {
 });
 bot.onText(_enum.regex_state.finish_file_upload, async msg => {
   let user = new User(msg.chat_id);
+  let phone = await user.phone;
   let doctor_id = await user.visit_doctor;
+  phone = '09356659943';
+  doctor_id = 6843;
   let res = await Doctor.find(doctor_id);
   let doctor = res.result.doctor;
   let message;
   let data;
   try {
-    let { tracking_code, count } = await user.send_testAnswer(38320614);
+    let test_answer = await Doctor.request_test_answer(doctor_id, phone);
+    let { tracking_code, count } = await user.send_testAnswer(
+      identifier.chat_id
+    );
     message = `جواب آزمایش شما با موفقیت برای دکتر ${doctor.firstName} ${
       doctor.lastName
     } ارسال شد\n کد پیگیری جواب آزمایش شما ${tracking_code}`;
