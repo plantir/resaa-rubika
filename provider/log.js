@@ -1,5 +1,5 @@
 const { connection } = require('../config/db.config');
-
+const moment = require('moment');
 class LogProvider {
   static log_bot_request({ chat_id, text, button_id }) {
     return new Promise((resolve, reject) => {
@@ -7,7 +7,7 @@ class LogProvider {
         chat_id
       )},${connection.escape(text)},${connection.escape(
         button_id
-      )}, ${connection.escape(new Date())})`;
+      )}, ${connection.escape(moment().format('YYYY-MM-DD HH:mm:ss'))})`;
       connection.query(query, (err, rows) => {
         if (err) {
           return reject(err);
@@ -21,7 +21,7 @@ class LogProvider {
     return new Promise((resolve, reject) => {
       let query = `INSERT INTO \`request_log\` (\`url\`, \`request_at\`) VALUES (${connection.escape(
         url
-      )}, ${connection.escape(new Date())})`;
+      )}, ${connection.escape(moment().format('YYYY-MM-DD HH:mm:ss'))})`;
       connection.query(query, (err, rows, item) => {
         if (err) {
           return reject(err);
@@ -35,7 +35,7 @@ class LogProvider {
       let query = `UPDATE \`request_log\` set \`status\` = ${connection.escape(
         status
       )} , \`response_at\` = ${connection.escape(
-        new Date()
+        moment().format('YYYY-MM-DD HH:mm:ss')
       )} where \`id\` = ${connection.escape(id)}`;
       connection.query(query, (err, rows, item) => {
         if (err) {

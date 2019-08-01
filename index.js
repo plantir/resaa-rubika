@@ -68,13 +68,32 @@ if (process.env.MODE !== 'polling') {
       res.send({ user_count, register_count });
     });
   });
-  app.get('/history', (req, res) => {
+  app.get('/bot-history', (req, res) => {
     connection.query(`select * from user_history`, (error, rows) => {
       res.send(
         rows.map(item => {
           item.created_at = moment(item.created_at).format(
             'YYYY-MM-DD HH:mm:ss'
           );
+          return item;
+        })
+      );
+    });
+  });
+  app.get('/api-history', (req, res) => {
+    connection.query(`select * from request_log`, (error, rows) => {
+      res.send(
+        rows.map(item => {
+          item.request_at = moment(item.request_at).format(
+            'YYYY-MM-DD HH:mm:ss'
+          );
+          item.response_at = moment(item.response_at).format(
+            'YYYY-MM-DD HH:mm:ss'
+          );
+          item.time_to_response =
+            moment(item.response_at).diff(moment(item.request_at), 'seconds') +
+            's';
+
           return item;
         })
       );
