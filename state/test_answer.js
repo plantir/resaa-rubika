@@ -166,7 +166,7 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
     data
   });
 });
-bot.onText(/حذف تمامی فایل ها و ارسال مجدد/, async msg => {
+bot.onText(_enum.regex_state.reset_file_upload, async msg => {
   let user = new User(msg.chat_id);
   let state = await user.state;
   if (state != _enum.state.test_answer) {
@@ -204,7 +204,7 @@ bot.on('file', async msg => {
   let files = await user.add_file(msg.file_inline.file_url);
   let message = `شما تا کنون ${
     files.length
-  } فایل پیوست کرده اید اگر فایل دیگری هم دارید ارسال کنید در غیر اینصورت بر روی دکمه ارسال جواب آزمایش ضربه بزنید`;
+  } فایل پیوست کرده اید اگر فایل دیگری هم دارید ارسال کنید در غیر اینصورت بر روی دکمه اتمام کلیک کنید`;
   let data = {
     bot_keypad: {
       rows: [
@@ -251,12 +251,11 @@ bot.on('file', async msg => {
     data
   });
 });
-bot.onText(/اتمام|تلاش مجدد/, async msg => {
+bot.onText(_enum.regex_state.finish_file_upload, async msg => {
   let user = new User(msg.chat_id);
   let doctor_id = await user.visit_doctor;
   let res = await Doctor.find(doctor_id);
   let doctor = res.result.doctor;
-
   let message;
   let data;
   try {
@@ -274,7 +273,8 @@ bot.onText(/اتمام|تلاش مجدد/, async msg => {
                 button_view: {
                   text: 'بازگشت به خانه',
                   type: 'TextOnly'
-                }
+                },
+                reply_type: 'API'
               }
             ]
           }
@@ -294,7 +294,8 @@ bot.onText(/اتمام|تلاش مجدد/, async msg => {
                 button_view: {
                   text: 'تلاش مجدد',
                   type: 'TextOnly'
-                }
+                },
+                reply_type: 'API'
               }
             ]
           },
@@ -305,7 +306,8 @@ bot.onText(/اتمام|تلاش مجدد/, async msg => {
                 button_view: {
                   text: 'بازگشت به خانه',
                   type: 'TextOnly'
-                }
+                },
+                reply_type: 'API'
               }
             ]
           }
