@@ -256,8 +256,8 @@ bot.onText(_enum.regex_state.finish_file_upload, async msg => {
   let user = new User(msg.chat_id);
   let phone = await user.phone;
   let doctor_id = await user.visit_doctor;
-  phone = '09356659943';
-  doctor_id = 6843;
+  // phone = '09356659943';
+  // doctor_id = 6843;
   let res = await Doctor.find(doctor_id);
   let doctor = res.result.doctor;
   let message;
@@ -265,7 +265,7 @@ bot.onText(_enum.regex_state.finish_file_upload, async msg => {
   try {
     let test_answer = await Doctor.request_test_answer(doctor_id, phone);
     let { tracking_code, count } = await user.send_testAnswer(
-      identifier.chat_id
+      test_answer.chat_id
     );
     message = `جواب آزمایش شما با موفقیت برای دکتر ${doctor.firstName} ${
       doctor.lastName

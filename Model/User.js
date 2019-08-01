@@ -302,7 +302,7 @@ class User {
             'شما فایلی برای ارسال ندارید لطفا مراحل ارسال جواب آزمایش را مجددا طی کنید'
           );
         }
-        testAnswers = JSON.parse(files);
+        let testAnswers = JSON.parse(files);
         request({
           url: `${doctor_bot_api}/testAnswer`,
           method: 'POST',
