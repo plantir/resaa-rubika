@@ -31,11 +31,13 @@ class DoctorProvder {
         rows.push({
           buttons: [
             {
+              id: `test_answer_${doctor.subscriberNumber}`,
               type: 'Simple',
               button_view: {
                 text: `ارسال جواب آزمایش`,
                 type: 'TextOnly'
-              }
+              },
+              reply_type: 'API'
             }
           ]
         });

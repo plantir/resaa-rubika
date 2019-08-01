@@ -158,7 +158,7 @@ class Doctor {
         json: true,
         uri: `${
           model.API_URL
-        }/Rubika/Doctors/${id}/DiagnosticDocumentsService/Quote?patientPhoneNumber=${phone}`
+        }/Doctors/${id}/DiagnosticDocumentsService/Quote?patientPhoneNumber=${phone}`
       })
         .then(res => {
           let status = res.result.quote.status;

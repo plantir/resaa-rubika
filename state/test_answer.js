@@ -3,14 +3,14 @@ const Doctor = require('../Model/Doctor');
 const bot = require('../bot');
 const _enum = require('../config/enum');
 const _ = require('lodash');
-bot.onText(/ارسال جواب آزمایش/, async msg => {
+bot.onText(_enum.regex_state.test_answer, async msg => {
   let message = '';
   let rows = [];
   let user = new User(msg.chat_id);
-  let visit_doctor = await user.visit_doctor;
   let phone = await user.phone;
-  let doctor = await user.last_visit_doctor;
-  let test_answer = await Doctor.request_test_answer(visit_doctor, phone);
+  phone = phone || '09356659943';
+  let doctor_id = +msg.aux_data.button_id.replace(/[^\d+]/g, '');
+  let test_answer = await Doctor.request_test_answer(doctor_id, phone);
   if (test_answer.status === 'ServiceUnavailable') {
     user.state = _enum.state.doctor_detail;
     message = `پزشک مورد این سرویس را تا اطلاع ثانوی غیر فعال کرده است`;
@@ -161,6 +161,7 @@ bot.onText(/ارسال جواب آزمایش/, async msg => {
       rows
     }
   };
+  msg.res.json(data);
   bot.sendMessage(msg.chat_id, message, {
     data
   });
@@ -214,7 +215,8 @@ bot.on('file', async msg => {
               button_view: {
                 text: 'اتمام',
                 type: 'TextOnly'
-              }
+              },
+              reply_type: 'API'
             }
           ]
         },
@@ -225,7 +227,8 @@ bot.on('file', async msg => {
               button_view: {
                 text: 'حذف تمامی فایل ها و ارسال مجدد',
                 type: 'TextOnly'
-              }
+              },
+              reply_type: 'API'
             }
           ]
         },
@@ -236,7 +239,8 @@ bot.on('file', async msg => {
               button_view: {
                 text: 'بازگشت به خانه',
                 type: 'TextOnly'
-              }
+              },
+              reply_type: 'API'
             }
           ]
         }

@@ -22,6 +22,7 @@ const regex_state = {
   speciality: /انتخاب پزشکان دیگر|بازگشت به صفحه تخصص ها/,
   my_doctor: /پرسش از پزشک خودم/,
   payment_check: /بررسی وضعیت پرداخت/,
+  test_answer: /ارسال جواب آزمایش/,
   register: /[98][9][0-3|9][0-9]{8,8}$/
 };
 module.exports = {
