@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+
 const db_config = {
   // timezone: 'utc',
   host: process.env.NODE_ENV == 'development' ? '127.0.0.1' : '127.0.0.1',

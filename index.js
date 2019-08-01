@@ -17,6 +17,7 @@ require('./state/payment_return');
 require('./state/test_answer');
 require('./state/404');
 const { redis, connection } = require('./config/db.config');
+const Log = require('./provider/log');
 const moment = require('moment');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
@@ -96,11 +97,14 @@ if (process.env.MODE !== 'polling') {
     }
     let input = { ...req.body.message, res: res, reply_type: req.body.type };
     bot.processUpdate(input);
-    let user = new User(req.body.message.chat_id);
-    user.log_history(
-      req.body.message.text,
-      req.body.message.aux_data ? req.body.message.aux_data.button_id : null
-    );
+    if (process.env.BOT_LOG_HISTORY) {
+      let button_id = req.body.message.aux_data
+        ? req.body.message.aux_data.button_id
+        : null;
+      let chat_id = req.body.message.chat_id;
+      let text = req.body.message.text;
+      Log.log_bot_request({ chat_id, button_id, text });
+    }
   });
   app.get(`/`, (req, res) => {
     res.status(200).send('worked');

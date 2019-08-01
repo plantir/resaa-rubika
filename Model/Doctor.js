@@ -1,6 +1,7 @@
 // const dbConf = require('../config/db.config');
 // const redis = dbConf.redis;
-const request = require('request-promise');
+const request = require('../provider/request');
+
 const bot_token =
   'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY';
 const dbConf = require('../config/db.config');

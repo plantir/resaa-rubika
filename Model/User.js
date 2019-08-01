@@ -1,7 +1,8 @@
 const { redis } = require('../config/db.config');
 const { connection } = require('../config/db.config');
 const moment = require('moment');
-const request = require('request-promise');
+const request = require('../provider/request');
+
 const fs = require('fs');
 const bot_token =
   'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY';
