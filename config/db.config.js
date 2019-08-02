@@ -3,8 +3,8 @@ const mysql = require('mysql');
 const db_config = {
   // timezone: 'utc',
   host: process.env.NODE_ENV == 'development' ? '127.0.0.1' : '127.0.0.1',
-  user: process.env.NODE_ENV == 'development' ? 'root' : 'armin',
-  password: process.env.NODE_ENV == 'development' ? '' : 'Merlin110',
+  user: process.env.NODE_ENV == 'development' ? 'root' : 'root',
+  password: process.env.NODE_ENV == 'development' ? '' : 'root',
   database:
     process.env.NODE_ENV == 'development'
       ? 'ressa_rubika_db'
