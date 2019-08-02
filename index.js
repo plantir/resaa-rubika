@@ -21,7 +21,7 @@ const Log = require('./provider/log');
 const moment = require('moment');
 if (process.env.MODE !== 'polling') {
   const bot = require('./bot');
-  const port = process.env.NODE_ENV == 'development' ? 8080 : 80;
+  const port = process.env.PORT;
   // const token = bot.token;
   // const url = 'https://rubika.resaa.net';
   const express = require('express');
