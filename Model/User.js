@@ -1,15 +1,8 @@
-const { redis } = require('../config/db.config');
-const { connection } = require('../config/db.config');
-const moment = require('moment');
+const { redis, connection } = require('../config/db.config');
 const request = require('../provider/request');
-
 const fs = require('fs');
-const bot_token =
-  'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY';
-const doctor_bot_api = process.env.DOCTOR_BOT_API;
 class User {
   constructor(chatId) {
-    this.API_URL = process.env.API_URL;
     this.chatId = chatId;
     this.addUser();
   }
@@ -152,7 +145,7 @@ class User {
     return new Promise((resolve, reject) => {
       request({
         method: 'POST',
-        uri: `${this.API_URL}/rubika/Patients/Registration`,
+        uri: `${process.env.API_URL}/rubika/Patients/Registration`,
         body: {
           phoneNumber
         },
@@ -183,7 +176,7 @@ class User {
     return new Promise((resolve, reject) => {
       request({
         method: 'POST',
-        uri: `${this.API_URL}/Rubika/Charge`,
+        uri: `${process.env.API_URL}/Rubika/Charge`,
         body: {
           phoneNumber,
           chatId,
@@ -219,7 +212,7 @@ class User {
         method: 'GET',
         url: 'https://botapi.rubika.ir',
         headers: {
-          bot_key: bot_token,
+          bot_key: process.env.TOKEN,
           'Content-Type': 'application/json'
         },
         json: true,
@@ -236,7 +229,7 @@ class User {
             res.data.upload_url,
             {
               headers: {
-                'bot-token': bot_token,
+                'bot-token': process.env.TOKEN,
                 'file-id': res.data.file_id,
                 'hash-send-file': res.data.hash_send_file
               }
@@ -298,7 +291,7 @@ class User {
         }
         let testAnswers = JSON.parse(files);
         request({
-          url: `${doctor_bot_api}/testAnswer`,
+          url: `${process.env.DOCTOR_BOT_API}/testAnswer`,
           method: 'POST',
           body: {
             testAnswers,
@@ -320,7 +313,7 @@ class User {
     return new Promise((resolve, reject) => {
       request({
         url: `${
-          this.API_URL
+          process.env.API_URL
         }/Doctors/${doctor_id}/DiagnosticDocumentsService/Invoice?patientPhoneNumber=${
           this.phone
         }`,
@@ -344,7 +337,7 @@ class User {
     return request({
       method: 'POST',
       uri: `${
-        this.API_URL
+        process.env.API_URL
       }/Doctors/${subscriberNumber}/CommunicationBooking?patientPhoneNumber=${phone}`,
       body: {},
       json: true

@@ -1,5 +1,5 @@
 let Rubikabot = require('rubika-bot');
-const token = process.env.token;
+const token = process.env.TOKEN;
 const User = require('./Model/User');
 // Create a bot that uses 'polling' to fetch new updates
 class Bot extends Rubikabot {

@@ -1,11 +1,5 @@
-// const dbConf = require('../config/db.config');
-// const redis = dbConf.redis;
 const request = require('../provider/request');
-
-const bot_token =
-  'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY';
-const dbConf = require('../config/db.config');
-const redis = dbConf.redis;
+const { redis } = require('../config/db.config');
 const _ = require('lodash');
 class Doctor {
   static get_doctors({ limit = 100, offset = 0, specialtyId, code, name }) {
@@ -100,7 +94,7 @@ class Doctor {
             method: 'GET',
             url: 'https://botapi.rubika.ir',
             headers: {
-              bot_key: bot_token,
+              bot_key: process.env.TOKEN,
               'Content-Type': 'application/json'
             },
             json: true,
@@ -121,7 +115,7 @@ class Doctor {
                   res.data.upload_url,
                   {
                     headers: {
-                      'bot-token': bot_token,
+                      'bot-token': process.env.TOKEN,
                       'file-id': res.data.file_id,
                       'hash-send-file': res.data.hash_send_file
                     }
