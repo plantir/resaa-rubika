@@ -8,16 +8,10 @@ const dbConf = require('../config/db.config');
 const redis = dbConf.redis;
 const _ = require('lodash');
 class Doctor {
-  constructor() {
-    this.API_URL = process.env.API_URL;
-    this.fields = 'subscriberNumber,firstName,lastName,currentlyAvailable';
-  }
-
   static get_doctors({ limit = 100, offset = 0, specialtyId, code, name }) {
-    let model = new Doctor();
-    let uri = `${model.API_URL}/Doctors?fields=${
-      model.fields
-    }&limit=${limit}&offset=${offset}`;
+    let uri = `${
+      process.env.API_URL
+    }/Doctors?fields=subscriberNumber,firstName,lastName,currentlyAvailable&limit=${limit}&offset=${offset}`;
     if (specialtyId) {
       uri += `&specialtyId=${specialtyId}`;
     }
@@ -53,10 +47,10 @@ class Doctor {
         .catch(err => reject(err));
     });
   }
+
   static find(id) {
-    let model = new Doctor();
     let uri = `${
-      model.API_URL
+      process.env.API_URL
     }/Doctors/${id}?fields=id,firstName,lastName,currentlyAvailable,subscriberNumber,specialty,tags,expertise,timetable,title,workplaces,providesDiagnosticDocumentsService&clientTimeZoneOffset=-210`;
     return request({
       method: 'GET',
@@ -64,17 +58,17 @@ class Doctor {
       uri: uri
     });
   }
+
   static get_speciality_list() {
     return new Promise((resolve, reject) => {
       redis.get(`speciality_list`, async (err, specialities) => {
         if (specialities) {
           return resolve(JSON.parse(specialities));
         } else {
-          let model = new Doctor();
           let res = await request({
             method: 'GET',
             json: true,
-            uri: `${model.API_URL}/Rubika/Doctors/MedicalSpecialties`
+            uri: `${process.env.API_URL}/Rubika/Doctors/MedicalSpecialties`
           });
           redis.set(
             `speciality_list`,
@@ -85,18 +79,18 @@ class Doctor {
       });
     });
   }
+
   static get_time_price(id, phone) {
-    let model = new Doctor();
     return request({
       method: 'GET',
       json: true,
       uri: `${
-        model.API_URL
+        process.env.API_URL
       }/Rubika/Doctors/${id}/communicationquote?patientphonenumber=${phone}`
     });
   }
+
   static image_id(doctor_id) {
-    let model = new Doctor();
     return new Promise((resolve, reject) => {
       redis.get(`doctor_${doctor_id}_image`, (err, file_id) => {
         if (file_id) {
@@ -119,7 +113,7 @@ class Doctor {
             }
           }).then(res => {
             request
-              .get(`${model.API_URL}/Doctors/${doctor_id}/Image`, {
+              .get(`${process.env.API_URL}/Doctors/${doctor_id}/Image`, {
                 encoding: null
               })
               .pipe(
@@ -147,14 +141,14 @@ class Doctor {
       });
     });
   }
+
   static request_test_answer(id, phone) {
     return new Promise((resolve, reject) => {
-      let model = new Doctor();
       return request({
         method: 'GET',
         json: true,
         uri: `${
-          model.API_URL
+          process.env.API_URL
         }/Doctors/${id}/DiagnosticDocumentsService/Quote?patientPhoneNumber=${phone}`
       })
         .then(res => {
