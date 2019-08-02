@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const Log = require('./log');
-module.exports = async function(options) {
+async function request(options) {
   let log_id;
   try {
     if (process.env.API_LOG_HISTORY) {
@@ -22,4 +22,9 @@ module.exports = async function(options) {
       }
       return err;
     });
-};
+}
+
+request.get = rp.get;
+request.post = rp.post;
+
+module.exports = request;

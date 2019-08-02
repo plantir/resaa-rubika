@@ -1,6 +1,14 @@
-const request = require('request-promise');
+const rp = require('request-promise');
 
-request
-  .get('https://webapi.resaa.net/Rubika/Doctors/MedicalSpecialties')
-  .then(res => console.log(res))
-  .catch(err => console.log(err));
+function request(option) {
+  console.log(option);
+}
+request.get = () => {
+  console.log('get');
+};
+// class request {
+//   static constructor(option) {
+//     console.log(option);
+//   }
+// }
+request.get();
