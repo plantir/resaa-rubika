@@ -39,7 +39,7 @@ class Doctor {
       })
         .then(res => {
           // console.timeEnd('get_doctor_list_from_api');
-          console.time('sort_random_doctors');
+          // console.time('sort_random_doctors');
           let available = res.result.doctors.filter(
             item => item.currentlyAvailable
           );
@@ -50,7 +50,7 @@ class Doctor {
           if (doctors.length < limit) {
             doctors.push(..._.sampleSize(notavailable, limit - doctors.length));
           }
-          console.timeEnd('sort_random_doctors');
+          // console.timeEnd('sort_random_doctors');
           resolve(doctors);
         })
         .catch(err => reject(err));

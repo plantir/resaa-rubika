@@ -98,7 +98,7 @@ class DoctorProvder {
         doctor.currentlyAvailable ? 'در دسترس' : 'خارج از دسترس'
       }`;
       let time_message = `زمان های پاسخگویی\n`;
-      console.time('proc1');
+      // console.time('proc1');
       doctor.timetable.segments = _.sortBy(
         doctor.timetable.segments,
         o => o.from
@@ -147,7 +147,7 @@ class DoctorProvder {
         }
         time_message += `\n${date_name} ${end_time_hour}:${end_time_minute} - ${start_time_hour}:${start_time_minute} `;
       }
-      console.timeEnd('proc1');
+      // console.timeEnd('proc1');
 
       try {
         await bot.sendMessage(msg.chat_id, '', {
