@@ -1,4 +1,6 @@
-const moment = require('moment');
+const request = require('request-promise');
 
-let date = moment('2019-07-30T18:47:41.000Z').format('YYYY-MM-DD HH:mm:ss');
-console.log(date);
+request
+  .get('https://webapi.resaa.net/Rubika/Doctors/MedicalSpecialties')
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
