@@ -2,13 +2,10 @@ const mysql = require('mysql');
 
 const db_config = {
   // timezone: 'utc',
-  host: process.env.NODE_ENV == 'development' ? '127.0.0.1' : '127.0.0.1',
-  user: process.env.NODE_ENV == 'development' ? 'root' : 'root',
-  password: process.env.NODE_ENV == 'development' ? '' : 'root',
-  database:
-    process.env.NODE_ENV == 'development'
-      ? 'ressa_rubika_db'
-      : 'resaa_rubika_db'
+  host: '127.0.0.1',
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 };
 const connection = mysql.createConnection(db_config);
 

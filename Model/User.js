@@ -6,16 +6,10 @@ const request = require('../provider/request');
 const fs = require('fs');
 const bot_token =
   'DG0RIQVKTTKCUEUGURNGOHBLWULTSSQFHISIFXGXDACBMGZFWKDWNBLZKQLFSJDY';
-const doctor_bot_api =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8888'
-    : 'http://doctorbottelegram.bsn.local';
+const doctor_bot_api = process.env.DOCTOR_BOT_API;
 class User {
   constructor(chatId) {
-    this.API_URL =
-      process.env.NODE_ENV === 'development'
-        ? 'https://webapi.resaa.net'
-        : 'http://resa-web-api.bsn.local';
+    this.API_URL = process.env.API_URL;
     this.chatId = chatId;
     this.addUser();
   }

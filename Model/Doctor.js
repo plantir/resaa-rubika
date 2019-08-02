@@ -9,10 +9,7 @@ const redis = dbConf.redis;
 const _ = require('lodash');
 class Doctor {
   constructor() {
-    this.API_URL =
-      process.env.NODE_ENV === 'development'
-        ? 'https://webapi.resaa.net'
-        : 'http://resa-web-api.bsn.local';
+    this.API_URL = process.env.API_URL;
     this.fields = 'subscriberNumber,firstName,lastName,currentlyAvailable';
   }
 
