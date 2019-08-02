@@ -8,7 +8,7 @@
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "mysql": "^2.17.1",
-    "node-rubika-bot-api": "https://github.com/vrwebdesign/rubika_bot",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "rubika-bot": "^1.0.1"
   }
 }
