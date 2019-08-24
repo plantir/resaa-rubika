@@ -310,13 +310,12 @@ class User {
     });
   }
   confirm_testAnswer(doctor_id, referenceNumber, requestsCount) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       request({
         url: `${
           process.env.API_URL
-        }/Doctors/${doctor_id}/DiagnosticDocumentsService/Invoice?patientPhoneNumber=${
-          this.phone
-        }`,
+        }/Doctors/${doctor_id}/DiagnosticDocumentsService/Invoice?patientPhoneNumber=${await this
+          .phone}`,
         method: 'POST',
         body: {
           requestsCount,
@@ -336,9 +335,7 @@ class User {
     let phone = await this.phone;
     return request({
       method: 'POST',
-      uri: `${
-        process.env.API_URL
-      }/Doctors/${subscriberNumber}/CommunicationBooking?patientPhoneNumber=${phone}`,
+      uri: `${process.env.API_URL}/Doctors/${subscriberNumber}/CommunicationBooking?patientPhoneNumber=${phone}`,
       body: {},
       json: true
     });
