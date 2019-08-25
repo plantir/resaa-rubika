@@ -43,7 +43,7 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
       data
     });
   } else if (test_answer.status === 'needMoney') {
-    message = `اعتبار فعلی شما ${test_answer.user_charge} تومان میباشد و در خواست شما نیاز به ${test_answer.request_price} تومان شارژ دارد `;
+    message = `در خواست شما نیاز به ${test_answer.request_price} تومان شارژ دارد و اعتبار شما کافی نمی‌باشد لطفا حساب خود را شارژ نمایید`;
     rows.push({
       buttons: [
         {
