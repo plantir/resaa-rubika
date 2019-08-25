@@ -4,7 +4,7 @@ const Doctor = require('../Model/Doctor');
 const _enum = require('../config/enum');
 bot.onText(_enum.regex_state.payment_check, async msg => {
   try {
-    await User.payment_verify(msg.aux_data.order_id);
+    let verif = await User.payment_verify(msg.aux_data.order_id);
     await bot.sendMessage(msg.chat_id, '✅ پرداخت با موفقیت انجام شد ✅');
     let user = new User(msg.chat_id);
     let phone = await user.phone;
@@ -15,9 +15,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
     let message = '';
     if (state == _enum.state.test_answer) {
       let test_answer = await Doctor.request_test_answer(visit_doctor, phone);
-      message = `هزینه جواب آزمایش ${
-        test_answer.request_price
-      } تومان می باشد و در صورت ارسال فایل از شارژ رسا شما کم میشود\nدر صورت تایید عکس آزمایش خود را بفرستید`;
+      message = `هزینه جواب آزمایش ${test_answer.request_price} تومان می باشد و در صورت ارسال فایل از شارژ رسا شما کم میشود\nدر صورت تایید عکس آزمایش خود را بفرستید`;
       rows.push({
         buttons: [
           {
@@ -45,13 +43,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
         await user.book_doctor(doctor.subscriberNumber);
         bot.sendMessage(
           msg.chat_id,
-          `شما تماس اول را مهمان رسا هستید\nشما میتوانید به مدت ${duration} دقیقه با دکتر 🕐 ${
-            doctor.firstName
-          } ${
-            doctor.lastName
-          } صحبت کنید\nبرای برقراری تماس بر روی دکمه تماس کلیک کنید و سپس کد ${
-            doctor.subscriberNumber
-          } را شماره گیری نمایید`,
+          `شما تماس اول را مهمان رسا هستید\nشما میتوانید به مدت ${duration} دقیقه با دکتر 🕐 ${doctor.firstName} ${doctor.lastName} صحبت کنید\nبرای برقراری تماس بر روی دکمه تماس کلیک کنید و سپس کد ${doctor.subscriberNumber} را شماره گیری نمایید`,
           {
             data: {
               bot_keypad: {
@@ -168,13 +160,7 @@ bot.onText(_enum.regex_state.payment_check, async msg => {
         };
         bot.sendMessage(
           msg.chat_id,
-          `شما میتوانید به مدت ${duration} دقیقه 🕐 با دکتر ${
-            doctor.firstName
-          } ${
-            doctor.lastName
-          } صحبت کنید\nبرای برقراری تماس بر روی دکمه تماس کلیک کنید و سپس کد ${
-            doctor.subscriberNumber
-          } را شماره گیری نمایید`,
+          `شما میتوانید به مدت ${duration} دقیقه 🕐 با دکتر ${doctor.firstName} ${doctor.lastName} صحبت کنید\nبرای برقراری تماس بر روی دکمه تماس کلیک کنید و سپس کد ${doctor.subscriberNumber} را شماره گیری نمایید`,
           {
             data
           }

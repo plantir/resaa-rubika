@@ -45,7 +45,7 @@ bot.onText(_enum.regex_state.test_charge, async msg => {
 bot.onText(_enum.regex_state.charge, async msg => {
   let message = 'جهت شارژ اعتبار خود یکی از مبالغ زیر را انتخاب نمایید';
   let rows = [];
-  let amounts = [15000, 20000, 30000, 40000, 50000];
+  let amounts = [1500, 20000, 30000, 40000, 50000];
   for (let amount of amounts) {
     rows.push({
       buttons: [

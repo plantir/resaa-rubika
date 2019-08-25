@@ -193,10 +193,10 @@ class User {
     });
   }
   static payment_verify(orderId) {
-    let model = new User();
-    return request.put(
-      `${model.API_URL}/Rubika/Charge/Verify?orderId=${orderId}`
-    );
+    return request({
+      method: 'PUt',
+      uri: `${process.env.API_URL}/Rubika/Charge/Verify?orderId=${orderId}`
+    });
   }
 
   reset_state_history() {
