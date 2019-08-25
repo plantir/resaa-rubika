@@ -50,7 +50,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
           button_view: {
             text: `شارژ اعتبار رسا`,
             type: 'TextOnly'
-          }
+          },
+          reply_type: 'API'
         }
       ]
     });
@@ -61,7 +62,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
           button_view: {
             text: 'بازگشت',
             type: 'TextOnly'
-          }
+          },
+          reply_type: 'API'
         }
       ]
     });
@@ -72,7 +74,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
           button_view: {
             text: 'بازگشت به خانه',
             type: 'TextOnly'
-          }
+          },
+          reply_type: 'API'
         }
       ]
     });
@@ -104,7 +107,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
           button_view: {
             text: `بازگشت`,
             type: 'TextOnly'
-          }
+          },
+          reply_type: 'API'
         }
       ]
     });
@@ -114,7 +118,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
           button_view: {
             text: `بازگشت به خانه`,
             type: 'TextOnly'
-          }
+          },
+          reply_type: 'API'
         }
       ]
     });
@@ -136,7 +141,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
         button_view: {
           text: 'بازگشت',
           type: 'TextOnly'
-        }
+        },
+        reply_type: 'API'
       }
     ]
   });
@@ -147,7 +153,8 @@ bot.onText(_enum.regex_state.test_answer, async msg => {
         button_view: {
           text: 'بازگشت به خانه',
           type: 'TextOnly'
-        }
+        },
+        reply_type: 'API'
       }
     ]
   });
