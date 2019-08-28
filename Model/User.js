@@ -318,7 +318,7 @@ class User {
           .phone}`,
         method: 'POST',
         body: {
-          requestsCount,
+          requestsCount: 1,
           referenceNumber
         },
         json: true
